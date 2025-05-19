@@ -155,18 +155,7 @@ def fun_get_Shilin(boolShilin=True):
         data = soup.text
 
         data_into_list = data.split("\r\n")
-        # ====================================================================
-        # data_lines = []
-        # with open(r'E:\YandexDisk\КШ\CryptoArchive\aaa.txt', 'r') as file:
-        #     data_lines = file.readlines()
-        # data_lines_clear = []
-        # for elem in data_lines:
-        #     straaa = elem.replace("\n", "")
-        #     data_lines_clear.append(straaa)
-        # data_into_list = data_lines_clear
 
-        # ==========================================================
-        # print(result)
         print(data_into_list)
     else:
         try:
@@ -982,8 +971,6 @@ def getinstrbybit70D(list_instrum, strdirection='long', strcategory='linear'):
 
 
 import locale
-
-
 def get_listMonets(intQvnt=100):
     bool_repeat = True
     while (bool_repeat):
