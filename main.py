@@ -85,7 +85,7 @@ if __name__ == '__main__':
                     22 == int_SpecFile or
                     23 == int_SpecFile or
                     24 == int_SpecFile or
-                    # 25 == int_SpecFile or
+                    25 == int_SpecFile or
                     26 == int_SpecFile
             ):
                 bool_repeat = False
@@ -141,6 +141,9 @@ if __name__ == '__main__':
         if (len(list_class_EMA) > 0):
             strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA1.txt"
             fun_save_list_workEMA_Work(list_class_EMA, strFile)
+    if (int_SpecFile == 25):
+        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_work150.txt"
+        fun_get_List_File_Ema(strFile, 0)
     if (int_SpecFile == 26):
         strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA1.txt"
         list_class_EMA = fun_get_List_File_Ema(strFile, 1)
