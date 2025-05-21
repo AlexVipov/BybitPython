@@ -888,6 +888,7 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
 
     # strBrowse = 'https://www.bybit.com/trade/usdt/'
     list_class_hyphe = []
+    list_class_IKD = []
     for elem in list_instruments:
         text = elem
         hyper = ''
@@ -912,12 +913,16 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
         while (bool_repeat):
             try:
                 if (intTypeOpen == 0):
-                    text = input("type Enter for skip\nor any cypher to save:")
+                    text = input("type Enter for skip\nor 3_2 cypher to save:")
                     if text == "":
                         bool_repeat = False
-                    else:
+                    elif( text == "3"):
                         strelem = str(hyper[0]) + ' ' + str(hyper[1])
                         list_class_hyphe.append(strelem)
+                        bool_repeat = False
+                    elif (text == "2"):
+                        strelem = str(hyper[0]) + ' ' + str(hyper[1])
+                        list_class_IKD.append(strelem)
                         bool_repeat = False
                 elif (intTypeOpen == 1):
                     text = input("type Enter for next:")
@@ -927,7 +932,7 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
             except ValueError:
                 print('Недопустимый ввод, введите число')
 
-    return list_class_hyphe
+    return list_class_hyphe, list_class_IKD
 
 
 def fun_save_ListWork(list_huper: list):

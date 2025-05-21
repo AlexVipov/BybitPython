@@ -137,10 +137,13 @@ if __name__ == '__main__':
         get_listMonets()  # intQvnt=150
     if (int_SpecFile == 24):
         strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA.txt"
-        list_class_EMA = fun_get_List_File_Ema(strFile, 0)
+        list_class_EMA, list_class_IKD = fun_get_List_File_Ema(strFile, 0)
         if (len(list_class_EMA) > 0):
-            strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA1.txt"
+            strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA_1.txt"
             fun_save_list_workEMA_Work(list_class_EMA, strFile)
+        if (len(list_class_IKD) > 0):
+            strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workIKD_1.txt"
+            fun_save_list_workEMA_Work(list_class_IKD, strFile)
     if (int_SpecFile == 25):
         strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_work150.txt"
         fun_get_List_File_Ema(strFile, 0)
