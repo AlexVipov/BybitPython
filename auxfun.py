@@ -913,7 +913,7 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
         while (bool_repeat):
             try:
                 if (intTypeOpen == 0):
-                    text = input("type Enter for skip\nor 3_2 cypher to save:")
+                    text = input("type Enter for skip\nor 2 - list_workIKD_1.txt\nor 3 - list_workEMA_1.txt :")
                     if text == "":
                         bool_repeat = False
                     elif( text == "3"):
