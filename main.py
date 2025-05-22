@@ -37,6 +37,7 @@ if __name__ == '__main__':
               "\n 25 - Открыть list_work150.txt: "
               "\n 26 - Открыть list_workEMA_1.txt: "
               "\n 27 - Открыть list_workIKD_1.txt: "
+              "\n 28 - Открыть ___.txt: "
               "\n ============================================== "
               # "\n 5 - Сохранить текущий Last_4Days.txt: "
               # "\n 6 - Открыть текущий Last_4Days.txt: "
@@ -88,7 +89,8 @@ if __name__ == '__main__':
                     24 == int_SpecFile or
                     25 == int_SpecFile or
                     26 == int_SpecFile or
-                    27 == int_SpecFile
+                    27 == int_SpecFile or
+                    28 == int_SpecFile
             ):
                 bool_repeat = False
 
@@ -154,6 +156,10 @@ if __name__ == '__main__':
         list_class_EMA = fun_get_List_File_Ema(strFile, 1)
     if (int_SpecFile == 27):
         strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workIKD_1.txt"
+        list_class_EMA = fun_get_List_File_Ema(strFile, 1)
+    if (int_SpecFile == 28):
+        textFile = input("Введите имя файла: ")
+        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\" + textFile
         list_class_EMA = fun_get_List_File_Ema(strFile, 1)
 
     elif (int_SpecFile == 11):
