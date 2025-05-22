@@ -902,7 +902,8 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
 
                 intCount = intCount + 1
                 print(elem)
-                print(intCount)
+                strfullprint = str(intCount) + '/' + str(len(list_instruments))
+                print(strfullprint)
             else:
                 continue
         except:
