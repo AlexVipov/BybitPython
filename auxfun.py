@@ -884,12 +884,12 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
         except ValueError:
             print('Недопустимый ввод, введите число')
 
-    intCount = 0
+    # intCount = 0
 
     # strBrowse = 'https://www.bybit.com/trade/usdt/'
     list_class_hyphe = []
     list_class_IKD = []
-    for elem in list_instruments:
+    for intCount, elem in enumerate(list_instruments):
         text = elem
         hyper = ''
         cypher = ''
@@ -900,7 +900,7 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
                 strBrowseHyper = 'https://www.bybit.com/trade/usdt/' + str(hyper[0])
                 webbrowser.open(strBrowseHyper)  # Go to example.com
 
-                intCount = intCount + 1
+                # intCount = intCount + 1
                 print(elem)
                 strfullprint = str(intCount) + '/' + str(len(list_instruments))
                 print(strfullprint)
