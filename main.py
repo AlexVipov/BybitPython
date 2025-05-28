@@ -3,7 +3,7 @@ from auxfun import get_list_instrums, fun_convert, fun_clear_LongList, fun_get_S
     fun_save_fileTV, fun_get_List_PreWork, fun_get_ListWorkLast, fun_save_withtime_ListWorkLast, fun_save_volatileLast, \
     fun_get_ShilinVolatile_NDays_Instruments, fun_open_List_Instruments, fun_save_AlfaFactorLast, \
     fun_get_first_AlfaFactorLast, get_listMonets, fun_save_list_workEMA_Work, fun_get_List_File_Ema, fun_save_AdrLast, \
-    fun_createAdrVolAlfa
+    fun_createAdrVolAlfa, fun_save_withdatetime
 
 if __name__ == '__main__':
 
@@ -145,9 +145,11 @@ if __name__ == '__main__':
         if (len(list_class_EMA) > 0):
             strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA_1.txt"
             fun_save_list_workEMA_Work(list_class_EMA, strFile)
+            fun_save_withdatetime(strFile)
         if (len(list_class_IKD) > 0):
             strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workIKD_1.txt"
             fun_save_list_workEMA_Work(list_class_IKD, strFile)
+            fun_save_withdatetime(strFile)
     if (int_SpecFile == 25):
         strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_work150.txt"
         fun_get_List_File_Ema(strFile, 0)

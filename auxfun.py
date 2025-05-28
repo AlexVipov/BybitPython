@@ -1,4 +1,5 @@
 import copy
+import os
 import shutil
 import webbrowser
 
@@ -980,7 +981,21 @@ def fun_save_withtime_ListWorkLast(strfilename="LastCrypto"):
 
     return
 
+def fun_save_withdatetime(strfilename):
+    str_time = datetime.now().strftime('%H_%M_%S')
+    str_date = datetime.now().strftime('%Y_%m_%d')
+    head, tail = os.path.split(strfilename)
+    str_fileCryptoFullName = head + '//' + str_date + '_' +str_time + '_' + tail
 
+    print(str_fileCryptoFullName)
+    try:
+        shutil.copyfile(strfilename, str_fileCryptoFullName)
+        print("Done  %s " % strfilename)
+
+    except ValueError:
+        print("Проблема с файлом: %s " % strfilename)
+
+    return
 def fun_clear_LongList(datalist: list):
     datalist_new = []
     for name_elem in datalist:
