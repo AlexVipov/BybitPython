@@ -1,9 +1,9 @@
 
 from auxfun import get_list_instrums, fun_convert, fun_clear_LongList, fun_get_Shilin, fun_save_ListWorkLast, \
     fun_save_fileTV, fun_get_List_PreWork, fun_get_ListWorkLast, fun_save_withtime_ListWorkLast, fun_save_volatileLast, \
-    fun_get_ShilinVolatile_NDays_Instruments, fun_open_List_Instruments, fun_save_AlfaFactorLast, \
+    fun_get_ShilinVolatile_NDays_Instruments, fun_open_List_Instruments, \
     fun_get_first_AlfaFactorLast, get_listMonets, fun_save_list_workEMA_Work, fun_get_List_File_Ema, fun_save_AdrLast, \
-    fun_createAdrVolAlfa, fun_save_withdatetime
+    fun_createAdrVolAlfa, fun_save_withdatetime, fun_save_AlfaFactorLast, gl_strPathSave
 
 if __name__ == '__main__':
 
@@ -142,28 +142,28 @@ if __name__ == '__main__':
     if (int_SpecFile == 23):
         get_listMonets()  # intQvnt=150
     if (int_SpecFile == 24):
-        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA.txt"
+        strFile = gl_strPathSave + "list_workEMA.txt"
         list_class_EMA, list_class_IKD = fun_get_List_File_Ema(strFile, 0)
         if (len(list_class_EMA) > 0):
-            strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA_1.txt"
+            strFile = gl_strPathSave + "list_workEMA_1.txt"
             fun_save_list_workEMA_Work(list_class_EMA, strFile)
             fun_save_withdatetime(strFile)
         if (len(list_class_IKD) > 0):
-            strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workIKD_1.txt"
+            strFile = gl_strPathSave + "list_workIKD_1.txt"
             fun_save_list_workEMA_Work(list_class_IKD, strFile)
             fun_save_withdatetime(strFile)
     if (int_SpecFile == 25):
-        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_work150.txt"
+        strFile = gl_strPathSave + "list_work150.txt"
         fun_get_List_File_Ema(strFile, 0)
     if (int_SpecFile == 26):
-        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA_1.txt"
+        strFile = gl_strPathSave + "list_workEMA_1.txt"
         list_class_EMA = fun_get_List_File_Ema(strFile, 1)
     if (int_SpecFile == 27):
-        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workIKD_1.txt"
+        strFile = gl_strPathSave + "list_workIKD_1.txt"
         list_class_EMA = fun_get_List_File_Ema(strFile, 1)
     if (int_SpecFile == 28):
         textFile = input("Введите имя файла: ")
-        strFile = "E:\\YandexDisk\\КШ\\CryptoArchive\\" + textFile
+        strFile = gl_strPathSave  + textFile
         list_class_EMA = fun_get_List_File_Ema(strFile, 1)
 
     elif (int_SpecFile == 11):

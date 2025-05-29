@@ -76,12 +76,14 @@ def get_listMonets(intQvnt=100):
     list_instrum = list_instrum_All[:intQvnt]
     sleep(1)
 
-    str_file_save = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_work150.txt"
+    # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
+    # gl_strCurrentWork = "CurrentWork\\"
+    str_file_save = gl_strPathSave + "list_work150.txt"
     write_listelem_to_file(str_file_save, list_instrum)
 
     list_workEMA = getinstrbybit70D(list_instrum, 'long')
 
-    str_file_save = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_workEMA.txt"
+    str_file_save = gl_strPathSave + "list_workEMA.txt"
     write_listelem_to_file(str_file_save, list_workEMA)
 
     print('Done list_workEMA.txt')
@@ -130,9 +132,9 @@ def fun_get_ListWork70(str_file_in="list_work70.txt"):
 
     list_instruments = []
     if (str_file_in == ""):
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\list_work70.txt"
+        str_file = gl_strPathSave + "list_work70.txt"
     else:
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\" + str_file_in
+        str_file = gl_strPathSave + str_file_in
 
     with open(str_file, 'r') as f:
         list_instruments = [line[:-1] for line in f]
@@ -651,29 +653,21 @@ def fun_save_AlfaFactorLast():
 
     strfile = ""
     if int_in  == 1:
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_5_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_5_Days.txt"
+        strfile = gl_strPathSave + "AlfaFactor_5_Days.txt"
     elif (int_in  == 2):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_20_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_20_Days.txt"
+        strfile = gl_strPathSave + "AlfaFactor_20_Days.txt"
     elif (int_in  ==3):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_60_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_60_Days.txt"
+        strfile = gl_strPathSave + "AlfaFactor_60_Days.txt"
     elif (int_in  == 4):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_All_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_All_Days.txt"
+        strfile = gl_strPathSave + "AlfaFactor_All_Days.txt"
     elif (int_in  == 5):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_4_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_4_Days.txt"
+        strfile = gl_strPathSave + "Vol_4_Days.txt"
     elif (int_in  == 6):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_10_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_10_Days.txt"
+        strfile = gl_strPathSave + "Vol_10_Days.txt"
     elif (int_in  == 7):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_20_Days.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_20_Days.txt"
+        strfile = gl_strPathSave + "Vol_20_Days.txt"
     elif (int_in  == 8):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Adr.txt"
-        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Adr.txt"
+        strfile = gl_strPathSave + "Adr.txt"
     else:
         return
     print(strfile)
