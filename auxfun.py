@@ -18,7 +18,8 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
+# gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
+gl_strPathSave = "D:\\CryptoArchive\\"
 gl_strCurrentWork = "CurrentWork\\"
 
 list_names_main = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'NEARUSDT',
@@ -76,8 +77,6 @@ def get_listMonets(intQvnt=100):
     list_instrum = list_instrum_All[:intQvnt]
     sleep(1)
 
-    # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
-    # gl_strCurrentWork = "CurrentWork\\"
     str_file_save = gl_strPathSave + "list_work150.txt"
     write_listelem_to_file(str_file_save, list_instrum)
 
@@ -368,9 +367,9 @@ def fun_open_List_Instruments(list_instr, boolSaveList=True):
 def fun_createAdrVolAlfa():
     print("fun_createAdrVolAlfa")
 
-    str_fileAdr = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_Adr.txt"
-    str_fileVol = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_4Days.txt"
-    str_fileAlfa = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_AlfaFactor.txt"
+    str_fileAdr = gl_strPathSave + "CryptoShort\\Last_Adr.txt"
+    str_fileVol = gl_strPathSave + "CryptoShort\\Last_4Days.txt"
+    str_fileAlfa = gl_strPathSave + "CryptoShort\\Last_AlfaFactor.txt"
 
     listAdr = []
     listVol = []
@@ -410,7 +409,7 @@ def fun_createAdrVolAlfa():
             list_res2.append(strelem)  # добавляем новый элемент
         print(list_res2)
 
-        str_file_combi = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\LastCombi.txt"
+        str_file_combi = gl_strPathSave + "CryptoShort\\LastCombi.txt"
         strProblema = str_file_combi
         with open(str_file_combi, 'w') as fp:
             int_count = 0
@@ -475,9 +474,9 @@ def fun_get_ListWorkLast(str_file_in="LastCrypto.txt"):
 
     list_instruments = []
     if (str_file_in == ""):
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\LastCrypto.txt"
+        str_file = gl_strPathSave + "CryptoShort\\LastCrypto.txt"
     else:
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + str_file_in
+        str_file = gl_strPathSave + "CryptoShort\\" + str_file_in
 
     with open(str_file, 'r') as f:
         list_instruments = [line[:-1] for line in f]
@@ -545,7 +544,7 @@ def fun_save_volatileLast(intDays):
     list_instruments = []
     # str_date = datetime.now().strftime('%Y_%m_%d')
     strDays = str(intDays)
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\" + strDays + "Days.txt"
+    str_file = gl_strPathSave + strDays + "Days.txt"
 
     try:
         with open(str_file, 'r') as f:
@@ -558,7 +557,7 @@ def fun_save_volatileLast(intDays):
     del list_instruments[1::2]
 
     # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_" + strDays + "Days.txt"
+    str_file_new = gl_strPathSave + "CryptoShort\\Last_" + strDays + "Days.txt"
     try:
         with open(str_file_new, 'w') as fp:
             for item in list_instruments:
@@ -575,7 +574,7 @@ def fun_save_volatileLast(intDays):
 def fun_save_AdrLast():
     list_instruments = []
     # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Adr.txt"
+    str_file = gl_strPathSave + "Adr.txt"
 
     try:
         with open(str_file, 'r') as f:
@@ -588,7 +587,7 @@ def fun_save_AdrLast():
     del list_instruments[1::2]
 
     # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_Adr.txt"
+    str_file_new = gl_strPathSave + "CryptoShort\\Last_Adr.txt"
     try:
         with open(str_file_new, 'w') as fp:
             for item in list_instruments:
@@ -605,9 +604,9 @@ def fun_get_ShilinVolatile_NDays_Instruments(intNdays):
     list_instruments = []
     # str_date = datetime.now().strftime('%Y_%m_%d')
     strNdDays = str(intNdays)
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_" + strNdDays + "Days.txt"
+    str_file = gl_strPathSave + "CryptoShort\\Last_" + strNdDays + "Days.txt"
     if (intNdays == "Adr"):
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_Adr.txt"
+        str_file = gl_strPathSave + "CryptoShort\\Last_Adr.txt"
 
     try:
         with open(str_file, 'r') as f:
@@ -716,8 +715,6 @@ def fun_get_first_AlfaFactorLast(int_in,list_instruments):
     # if (int_in == 0):
     #     return list_zapis, strfile_new
 
-    # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
-    # gl_strCurrentWork = "CurrentWork\\"
     strfile = ""
     if int_in == 1:
         strfile_new =  gl_strPathSave + gl_strCurrentWork + "AlfaFactor_5_Days_Works.txt"
@@ -777,7 +774,7 @@ def fun_get_first_AlfaFactorLast(int_in,list_instruments):
     return list_zapis,strfile_new
 
 def fun_save_fileTV(strFileName):
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + strFileName + ".txt"
+    str_file = gl_strPathSave + "CryptoShort\\" + strFileName + ".txt"
     list_in = []
     list_instrums = []
     try:
@@ -791,7 +788,7 @@ def fun_save_fileTV(strFileName):
             hyper = text.split('/', -1)
             list_instrums.append(hyper.pop())
 
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + strFileName + "_TV.txt"
+        str_file = gl_strPathSave + "CryptoShort\\" + strFileName + "_TV.txt"
         strProb = "Проблема fun_save_fileTV 3 "
         list_instrums.sort()
         with open(str_file, 'w') as fp:
@@ -894,7 +891,7 @@ def fun_get_Shilin(boolShilin=True):
             data_into_list_true.append(name_elem)
 
         data_into_list_true = fun_clear_LongList(data_into_list_true)
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoLong\\" + str_date + '_' + "cryptoles.txt"
+        str_file = gl_strPathSave + "CryptoLong\\" + str_date + '_' + "cryptoles.txt"
         with open(str_file, 'w') as fp:
             data_into_list_sort = copy.deepcopy(data_into_list_true)
             data_into_list_sort.sort()
@@ -946,7 +943,7 @@ def fun_get_List_PreWork():
     list_class_hyphe = []
 
     # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\cryptowork.txt"
+    str_file = gl_strPathSave + "CryptoShort\\cryptowork.txt"
 
     try:
         with open(str_file, 'r') as f:
@@ -1070,7 +1067,7 @@ def fun_save_ListWork(list_huper: list):
     str_time = datetime.now().strftime('%H_%M_%S')
     str_date = datetime.now().strftime('%Y_%m_%d')
 
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + str_date + '_' + "cryptowork.txt"
+    str_file = gl_strPathSave + "CryptoShort\\" + str_date + '_' + "cryptowork.txt"
     try:
         with open(str_file, 'w') as fp:
             data_into_list_sort = copy.deepcopy(list_huper)
@@ -1095,11 +1092,11 @@ def fun_save_withtime_ListWorkLast(strfilename="LastCrypto"):
     if strfilename != "LastCrypto":
         str_fileCrypto = str_fileCrypto
 
-    str_fileCryptoFull = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + str_fileCrypto + ".txt"
+    str_fileCryptoFull = gl_strPathSave + "CryptoShort\\" + str_fileCrypto + ".txt"
     mtime = os.path.getmtime(str_fileCryptoFull)
     mtime_readable = datetime.fromtimestamp(mtime).strftime('%Y_%m_%d_%H_%M_%S')
 
-    str_fileCryptoFullName = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + mtime_readable + '_' + str_fileCrypto + ".txt"
+    str_fileCryptoFullName = gl_strPathSave + "CryptoShort\\" + mtime_readable + '_' + str_fileCrypto + ".txt"
     print(mtime_readable)
     try:
         shutil.copyfile(str_fileCryptoFull, str_fileCryptoFullName)
