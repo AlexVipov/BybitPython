@@ -20,14 +20,14 @@ if __name__ == '__main__':
               # "\n 3 - Сохранить текущий cryptowork.txt with times"
               # "\n 4 - Сохранить текущий LastCrypto.txt with timestamp: "
               "\n ============================================== "
-              "\n 8 -  Создать Last_AlfaFactor.txt из AlfaFactor.txt(берем из бота): "
-              "\n 9 -  Создать текущий AlfaWork.txt из Last_AlfaFactor: "
+              "\n 8 -  Создать Last_***.txt из бота: "
+              "\n 9 -  Создать текущий date_time_***_Work.txt из Last_***.txt: "
               "\n 10 - Сохранить текущий Last_AlfaFactor.txt with timestamp: "
               "\n 20 - Открыть текущий AlfaWork.txt : "
-              "\n ============================================== "
-              "\n 14 - Создать Last_Adr.txt из Adr.txt(берем из бота): "
-              "\n 15 - Открыть текущий Last_Adr.txt: "
-              "\n 16 - Сохранить текущий Last_Adr.txt with timestamp: "
+              # "\n ============================================== "
+              # "\n 14 - Создать Last_Adr.txt из Adr.txt(берем из бота): "
+              # "\n 15 - Открыть текущий Last_Adr.txt: "
+              # "\n 16 - Сохранить текущий Last_Adr.txt with timestamp: "
               "\n ============================================== "
               # "\n 21 - Сохранить текущий AlfaWork.txt with timestamp: "
               # "\n 22 - Файл( N ), создать cryptowork.txt: "
@@ -124,9 +124,10 @@ if __name__ == '__main__':
         fun_save_AlfaFactorLast()
     elif (int_SpecFile == 9):
         list_open = fun_get_first_AlfaFactorLast()
-        list_class_hyp = fun_open_List_Instruments(list_open)
-        fun_save_ListWorkLast(list_class_hyp, "AlfaWork.txt")
-        fun_save_fileTV('AlfaWork')
+        if(len(list_open) != 0):
+            list_class_hyp = fun_open_List_Instruments(list_open)
+            fun_save_ListWorkLast(list_class_hyp, "AlfaWork.txt")
+            fun_save_fileTV('AlfaWork')
     elif (int_SpecFile == 10):
         fun_save_withtime_ListWorkLast("Last_AlfaFactor")
     elif (int_SpecFile == 20):

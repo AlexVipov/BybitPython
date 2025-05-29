@@ -1,6 +1,7 @@
 import copy
 import os
 import shutil
+import traceback
 import webbrowser
 
 import requests
@@ -582,41 +583,6 @@ def fun_save_AdrLast():
         print(str_file)
     return
 
-
-def fun_save_AlfaFactorLast():
-    list_instruments = []
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor.txt"
-
-    try:
-        with open(str_file, 'r') as f:
-            list_instruments = [line[:-1] for line in f]
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-
-    del list_instruments[1::2]
-
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_AlfaFactor.txt"
-    try:
-        with open(str_file_new, 'w') as fp:
-
-            int_count = 0
-            for item in list_instruments:
-                # write each item on a new line
-                int_count = int_count + 1
-                stritem = item + "__" + str(int_count)
-                fp.write("%s\n" % stritem)
-            print('Done Last_AlfaFactor.txt')
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-    return
-
-
 def fun_get_ShilinVolatile_NDays_Instruments(intNdays):
     list_instruments = []
     # str_date = datetime.now().strftime('%Y_%m_%d')
@@ -635,33 +601,165 @@ def fun_get_ShilinVolatile_NDays_Instruments(intNdays):
 
     return list_instr
 
+def fun_get_choose_bot_file():
+
+    bool_repeat = True
+    while (bool_repeat):
+        try:
+            print("Выберите тип файла из бота:")
+            print("AlfaFactor_5_Days введите 1")
+            print("AlfaFactor_20_Days введите 2")
+            print("AlfaFactor_60_Days ведите 3")
+            print("AlfaFactor_All_Days  введите 4")
+            print("------------------------")
+            print("Vol_4_Days введите 5")
+            print("Vol_10_Days введите 6")
+            print("Vol_20_Days введите 7")
+            print("------------------------")
+            print("Adr введите 8")
+            print("------------------------")
+            text = input("Ввод числа (0 - выход): ")
+            if text not in ['0', '1', '2', '3', '4', '5', '6', '7', '8']:
+                print("Недопустимый ввод")
+                bool_repeat = True
+            elif (text == '0'):
+                int_in = int(text)
+                bool_repeat = False
+                return
+            else:
+                int_in = int(text)
+                bool_repeat = False
+
+        except ValueError:
+            print('проблема ввода fun_save_AlfaFactorLast')
+
+    return text
+def fun_save_AlfaFactorLast():
+
+    print("Создать Last_***.txt из бота")
+    int_in  = int(fun_get_choose_bot_file())
+    if( int_in == 0 ):
+        return
+
+    strfile = ""
+    if int_in  == 1:
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_5_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_5_Days.txt"
+    elif (int_in  == 2):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_20_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_20_Days.txt"
+    elif (int_in  ==3):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_60_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_60_Days.txt"
+    elif (int_in  == 4):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_All_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_All_Days.txt"
+    elif (int_in  == 5):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_4_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_4_Days.txt"
+    elif (int_in  == 6):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_10_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_10_Days.txt"
+    elif (int_in  == 7):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_20_Days.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_20_Days.txt"
+    elif (int_in  == 8):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Adr.txt"
+        str_file_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Adr.txt"
+    else:
+        return
+    print(strfile)
+
+    list_instruments = []
+    try:
+        with open(strfile, 'r') as f:
+            list_instruments = [line[:-1] for line in f]
+
+        del list_instruments[1::2]
+
+        strfile = str_file_new #для exception
+        with open(str_file_new, 'w') as fp:
+            for item in list_instruments:
+                # write each item on a new line
+                fp.write("%s\n" % item)
+            print('Done %s' % str_file_new)
+
+
+    except ValueError:
+        print("Проблема с файлом: %s " % strfile)
+        print(strfile)
+
+    return list_instruments
+
+
+
 
 def fun_get_first_AlfaFactorLast():
-    list_alfa = []
+    list_zapis = []
 
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\Last_AlfaFactor.txt"
+    print("Создать текущий date_time_***_Work.txt из Last_***.txt")
+    int_in = int(fun_get_choose_bot_file())
+    if (int_in == 0):
+        return list_zapis
+
+    strfile = ""
+    if int_in == 1:
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_5_Days_Works.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_5_Days.txt"
+    elif (int_in == 2):
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_20_Days_Works.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_20_Days.txt"
+    elif (int_in == 3):
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_60_Days_Works.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_60_Days.txt"
+    elif (int_in == 4):
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_All_Days_Works.txt"
+        str_file= "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_All_Days.txt"
+    elif (int_in == 5):
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_4_Days_Works.txt"
+        str_fil = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_4_Days.txt"
+    elif (int_in == 6):
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_10_Days_Works.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_10_Days.txt"
+    elif (int_in == 7):
+        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_20_Days_Works.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_20_Days.txt"
+    elif (int_in == 8):
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Adr_Works.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Adr.txt"
+    else:
+        return
+    print(str_file)
 
     try:
         with open(str_file, 'r') as f:
-            list_alfa = [line[:-1] for line in f]
+            list_zapis = [line[:-1] for line in f]
 
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
+    except Exception as e:
+        print('Ошибка:\n', traceback.format_exc())
+        return list_zapis
 
-    int_SpecFile = 0
-    try:
-        int_SpecFile = int(input('Число первых записей( файл Last_AlfaFactor.txt): '))
+    if( int_in in [1,2,3,4]):
+        int_SpecFile = 0
+        try:
+            int_SpecFile = int(input('Число первых записей( файл Last_AlfaFactor.txt): '))
 
-    except ValueError:
-        print('Недопустимый ввод')
+        except ValueError:
+            print('Недопустимый ввод')
 
-    if (int_SpecFile > 0):
-        del list_alfa[int_SpecFile:]
-    elif (int_SpecFile < 0):
-        del list_alfa[:int_SpecFile]
+        if (int_SpecFile > 0):
+            del list_zapis[int_SpecFile:]
+        elif (int_SpecFile < 0):
+            del list_zapis[:int_SpecFile]
 
-    return list_alfa
+    # return list_zapis
+
+    fun_save_ListWorkLast(list_zapis,strfile_new)
+
+    return list_zapis
+
+
+    # fun_save_withdatetime(strfilename, strfile_new)
 
 def fun_save_fileTV(strFileName):
     str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + strFileName + ".txt"
@@ -691,11 +789,26 @@ def fun_save_fileTV(strFileName):
 
     return
 
+def fun_save_FileWork(list_class_hyph: list, strFileName: str):
+
+    try:
+        with open(strFileName, 'w') as fp:
+            for item in list_class_hyph:
+                # write each item on a new line
+                if ("" != item.hyper):
+                    str1 = str(item.prc) + '#' + item.hyper
+                    fp.write("%s\n" % str1)
+            print('Done list_huper')
+
+    except ValueError:
+        print("Проблема с файлом: ")
+        print(strFileName)
+    return
 
 def fun_save_ListWorkLast(list_class_hyph: list, strFileName: str):
     list_class_hyph.sort(key=operator.attrgetter('prc'))
 
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + strFileName
+    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\" + strFileName
 
     try:
         with open(str_file, 'w') as fp:
@@ -981,11 +1094,14 @@ def fun_save_withtime_ListWorkLast(strfilename="LastCrypto"):
 
     return
 
-def fun_save_withdatetime(strfilename):
+def fun_save_withdatetime(strfilename, strpostfix = ""):
     str_time = datetime.now().strftime('%H_%M_%S')
     str_date = datetime.now().strftime('%Y_%m_%d')
     head, tail = os.path.split(strfilename)
-    str_fileCryptoFullName = head + '//' + str_date + '_' +str_time + '_' + tail
+    if( strpostfix != "" ):
+        str_fileCryptoFullName = head + '//' + str_date + '_' + str_time + '_' + strpostfix + '_' + tail
+    else:
+        str_fileCryptoFullName = head + '//' + str_date + '_' + str_time + '_' + tail
 
     print(str_fileCryptoFullName)
     try:
