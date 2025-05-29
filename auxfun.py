@@ -18,6 +18,9 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
+gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
+gl_strCurrentWork = "CurrentWork\\"
+
 list_names_main = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'NEARUSDT',
                    'MATICUSDT', 'LTCUSDT']
 
@@ -314,9 +317,13 @@ def fun_open_List_Instruments(list_instr, boolSaveList=True):
     for elem in list_instr:
 
         ppname = elem[:elem.find(':')]
-        ppname = fun_convert(ppname)
+        #Конвертируем если берем из КриптоБота
+        ppname_forweb = fun_convert(ppname)
 
-        strhyper1 = 'https://www.bybit.com/trade/' + ppname
+        ppercent = elem[elem.find(':'):]
+        ppercent = ppercent[2:]
+
+        strhyper1 = 'https://www.bybit.com/trade/' + ppname_forweb
         webbrowser.open(strhyper1)  # Go to example.com
 
         bool_repeat = True
@@ -336,8 +343,9 @@ def fun_open_List_Instruments(list_instr, boolSaveList=True):
                 if text == "":
                     bool_repeat = False
                 else:
-                    float_percent = float(text)
-                    aa = InstrData(float_percent, strhyper1)
+                    # float_percent = float(text)
+                    # aa = InstrData(ppercent, strhyper1)
+                    aa = InstrData(ppercent, ppname)
                     list_class_hyp1.append(aa)
                     bool_repeat = False
 
@@ -636,7 +644,7 @@ def fun_get_choose_bot_file():
     return text
 def fun_save_AlfaFactorLast():
 
-    print("Создать Last_***.txt из бота")
+    # print("Создать Last_***.txt из бота")
     int_in  = int(fun_get_choose_bot_file())
     if( int_in == 0 ):
         return
@@ -675,76 +683,83 @@ def fun_save_AlfaFactorLast():
         with open(strfile, 'r') as f:
             list_instruments = [line[:-1] for line in f]
 
+        #Удаляем четные строки из файла
+        # HUMAUSDT: 330.1333333333 %
+        # график(https: // www.binance.com / ru / trade / HUMA_USDT?layout = pro)
         del list_instruments[1::2]
 
-        strfile = str_file_new #для exception
-        with open(str_file_new, 'w') as fp:
-            for item in list_instruments:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-            print('Done %s' % str_file_new)
+        # strfile = str_file_new #для exception
+        # with open(str_file_new, 'w') as fp:
+        #     for item in list_instruments:
+        #         # write each item on a new line
+        #         fp.write("%s\n" % item)
+        #     print('Done %s' % str_file_new)
 
 
     except ValueError:
         print("Проблема с файлом: %s " % strfile)
         print(strfile)
 
-    return list_instruments
+    return int_in,list_instruments
 
 
 
 
-def fun_get_first_AlfaFactorLast():
-    list_zapis = []
+def fun_get_first_AlfaFactorLast(int_in,list_instruments):
+    list_zapis = list_instruments
     strfile_new = ""
 
-    print("Создать текущий date_time_***_Work.txt из Last_***.txt")
-    int_in = int(fun_get_choose_bot_file())
-    if (int_in == 0):
-        return list_zapis, strfile_new
+    # print("Создать текущий date_time_***_Work.txt из Last_***.txt")
+    # int_in = int(fun_get_choose_bot_file())
+    # if (int_in == 0):
+    #     return list_zapis, strfile_new
 
+    # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
+    # gl_strCurrentWork = "CurrentWork\\"
     strfile = ""
     if int_in == 1:
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_5_Days_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_5_Days.txt"
+        strfile_new =  gl_strPathSave + gl_strCurrentWork + "AlfaFactor_5_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_AlfaFactor_5_Days.txt"
     elif (int_in == 2):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_20_Days_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_20_Days.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "AlfaFactor_20_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_AlfaFactor_20_Days.txt"
     elif (int_in == 3):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_60_Days_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_60_Days.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "AlfaFactor_60_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_AlfaFactor_60_Days.txt"
     elif (int_in == 4):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\AlfaFactor_All_Days_Works.txt"
-        str_file= "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_All_Days.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "AlfaFactor_All_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_AlfaFactor_All_Days.txt"
     elif (int_in == 5):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_4_Days_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_4_Days.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "Vol_4_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_Vol_4_Days.txt"
     elif (int_in == 6):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_10_Days_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_10_Days.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "Vol_10_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_Vol_10_Days.txt"
     elif (int_in == 7):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_20_Days_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_20_Days.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "Vol_20_Days_Works.txt"
+        str_file = gl_strPathSave + "Last_Vol_20_Days.txt"
     elif (int_in == 8):
-        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Adr_Works.txt"
-        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Adr.txt"
+        strfile_new = gl_strPathSave + gl_strCurrentWork + "Adr_Works.txt"
+        str_file = gl_strPathSave + "Last_Adr.txt"
     else:
         return list_zapis, strfile_new
     print(str_file)
     print(strfile_new)
 
-    try:
-        with open(str_file, 'r') as f:
-            list_zapis = [line[:-1] for line in f]
-
-    except Exception as e:
-        print('Ошибка:\n', traceback.format_exc())
-        return list_zapis, strfile_new
+    # try:
+    #     with open(str_file, 'r') as f:
+    #         list_zapis = [line[:-1] for line in f]
+    #
+    # except Exception as e:
+    #     print('Ошибка:\n', traceback.format_exc())
+    #     return list_zapis, strfile_new
 
     if( int_in in [1,2,3,4]):
         int_SpecFile = 0
         try:
-            int_SpecFile = int(input('Число первых записей( файл Last_AlfaFactor.txt): '))
+            print('Число первых записей для лонга( файл Last_AlfaFactor_***.txt): ')
+            print('Число последних записей для шорта( файл Last_AlfaFactor_***.txt): ')
+            int_SpecFile = int(input('Число: '))
 
         except ValueError:
             print('Недопустимый ввод')
@@ -753,15 +768,11 @@ def fun_get_first_AlfaFactorLast():
             del list_zapis[int_SpecFile:]
         elif (int_SpecFile < 0):
             del list_zapis[:int_SpecFile]
-
-    # return list_zapis
-
-
+            res = list_zapis.reverse()
+        else:
+            list_zapis.clear()
 
     return list_zapis,strfile_new
-
-
-    # fun_save_withdatetime(strfilename, strfile_new)
 
 def fun_save_fileTV(strFileName):
     str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\CryptoShort\\" + strFileName + ".txt"
@@ -786,8 +797,8 @@ def fun_save_fileTV(strFileName):
                 # write each item on a new line
                 fp.write("%s\n" % item)
 
-    except:
-        print(strProb)
+    except Exception as e:
+        print('Ошибка:\n', traceback.format_exc())
 
     return
 
@@ -808,22 +819,23 @@ def fun_save_FileWork(list_class_hyph: list, strFileName: str):
     return
 
 def fun_save_ListWorkLast(list_class_hyph: list, strFileName: str):
-    list_class_hyph.sort(key=operator.attrgetter('prc'))
 
-    str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\" + strFileName
+    if (len(list_class_hyph) != 0):
+        list_class_work = fun_open_List_Instruments(list_class_hyph)
 
     try:
-        with open(str_file, 'w') as fp:
-            for item in list_class_hyph:
+        with open(strFileName, 'w') as fp:
+            for item in list_class_work:
                 # write each item on a new line
                 if ("" != item.hyper):
-                    str1 = str(item.prc) + '#' + item.hyper
+
+                    str1 = item.hyper + ' ' + str(item.prc)
                     fp.write("%s\n" % str1)
             print('Done list_huper')
 
     except ValueError:
         print("Проблема с файлом: ")
-        print(str_file)
+        print(strFileName)
     return
 
 

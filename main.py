@@ -20,15 +20,15 @@ if __name__ == '__main__':
               # "\n 3 - Сохранить текущий cryptowork.txt with times"
               # "\n 4 - Сохранить текущий LastCrypto.txt with timestamp: "
               "\n ============================================== "
-              "\n 8 -  Создать Last_***.txt из бота: "
-              "\n 9 -  Создать текущий date_time_***_Work.txt из Last_***.txt: "
-              "\n 10 - Сохранить текущий Last_AlfaFactor.txt with timestamp: "
-              "\n 20 - Открыть текущий AlfaWork.txt : "
+              "\n 8 -  Создать ***_Work.txt из бота: "
+              # "\n 9 -  Создать текущий date_time_***_Work.txt из Last_***.txt: "
+              # "\n 10 - Сохранить текущий Last_AlfaFactor.txt with timestamp: "
+              # "\n 20 - Открыть текущий AlfaWork.txt : "
               # "\n ============================================== "
               # "\n 14 - Создать Last_Adr.txt из Adr.txt(берем из бота): "
               # "\n 15 - Открыть текущий Last_Adr.txt: "
               # "\n 16 - Сохранить текущий Last_Adr.txt with timestamp: "
-              "\n ============================================== "
+              # "\n ============================================== "
               # "\n 21 - Сохранить текущий AlfaWork.txt with timestamp: "
               # "\n 22 - Файл( N ), создать cryptowork.txt: "
               "\n ============================================== "
@@ -121,14 +121,14 @@ if __name__ == '__main__':
         fun_save_withtime_ListWorkLast("Last_4Days")
 
     elif (int_SpecFile == 8):
-        fun_save_AlfaFactorLast()
-    elif (int_SpecFile == 9):
-        list_open, strFileZps = fun_get_first_AlfaFactorLast()
+        int_in,list_instruments = fun_save_AlfaFactorLast()
+        list_open, strFileZps = fun_get_first_AlfaFactorLast(int_in, list_instruments)
         fun_save_ListWorkLast(list_open, strFileZps)
-        if(len(list_open) != 0):
-            list_class_hyp = fun_open_List_Instruments(list_open)
-            fun_save_ListWorkLast(list_class_hyp, "AlfaWork.txt")
-            fun_save_fileTV('AlfaWork')
+        ...
+    # elif (int_SpecFile == 9):
+    #     list_open, strFileZps = fun_get_first_AlfaFactorLast(int_in, list_instruments)
+    #     fun_save_ListWorkLast(list_open, strFileZps)
+
     elif (int_SpecFile == 10):
         fun_save_withtime_ListWorkLast("Last_AlfaFactor")
     elif (int_SpecFile == 20):
