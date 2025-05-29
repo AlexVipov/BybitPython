@@ -696,11 +696,12 @@ def fun_save_AlfaFactorLast():
 
 def fun_get_first_AlfaFactorLast():
     list_zapis = []
+    strfile_new = ""
 
     print("Создать текущий date_time_***_Work.txt из Last_***.txt")
     int_in = int(fun_get_choose_bot_file())
     if (int_in == 0):
-        return list_zapis
+        return list_zapis, strfile_new
 
     strfile = ""
     if int_in == 1:
@@ -717,19 +718,20 @@ def fun_get_first_AlfaFactorLast():
         str_file= "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_AlfaFactor_All_Days.txt"
     elif (int_in == 5):
         strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_4_Days_Works.txt"
-        str_fil = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_4_Days.txt"
+        str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_4_Days.txt"
     elif (int_in == 6):
         strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_10_Days_Works.txt"
         str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_10_Days.txt"
     elif (int_in == 7):
-        strfile = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_20_Days_Works.txt"
+        strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Vol_20_Days_Works.txt"
         str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Vol_20_Days.txt"
     elif (int_in == 8):
         strfile_new = "E:\\YandexDisk\\КШ\\CryptoArchive\\Adr_Works.txt"
         str_file = "E:\\YandexDisk\\КШ\\CryptoArchive\\Last_Adr.txt"
     else:
-        return
+        return list_zapis, strfile_new
     print(str_file)
+    print(strfile_new)
 
     try:
         with open(str_file, 'r') as f:
@@ -737,7 +739,7 @@ def fun_get_first_AlfaFactorLast():
 
     except Exception as e:
         print('Ошибка:\n', traceback.format_exc())
-        return list_zapis
+        return list_zapis, strfile_new
 
     if( int_in in [1,2,3,4]):
         int_SpecFile = 0
@@ -754,9 +756,9 @@ def fun_get_first_AlfaFactorLast():
 
     # return list_zapis
 
-    fun_save_ListWorkLast(list_zapis,strfile_new)
 
-    return list_zapis
+
+    return list_zapis,strfile_new
 
 
     # fun_save_withdatetime(strfilename, strfile_new)

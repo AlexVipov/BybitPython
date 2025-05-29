@@ -123,7 +123,8 @@ if __name__ == '__main__':
     elif (int_SpecFile == 8):
         fun_save_AlfaFactorLast()
     elif (int_SpecFile == 9):
-        list_open = fun_get_first_AlfaFactorLast()
+        list_open, strFileZps = fun_get_first_AlfaFactorLast()
+        fun_save_ListWorkLast(list_open, strFileZps)
         if(len(list_open) != 0):
             list_class_hyp = fun_open_List_Instruments(list_open)
             fun_save_ListWorkLast(list_class_hyp, "AlfaWork.txt")
