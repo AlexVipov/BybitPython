@@ -266,19 +266,27 @@ def getinstrbybit70D(list_instrum, strdirection='long', strcategory='linear'):
         # priceLastWeek Не используется
         intxcheck_70, floatEMA_70, priceLastWeek = checkEMA(elem, 'W')
         if (intxcheck_70 == 999):  # инструмент торгуется малый период
-            continue
+            intxcheck_70 = 2 # инструмент торгуется малый период, новый и могут толкнуть
+            floatEMA_70 = 0 # инструмент торгуется малый период, новый и могут толкнуть
+            # continue
         intxcheck_10, floatEMA_10, priceLastDay = checkEMA(elem, 'D')
         if (intxcheck_10 == 999):  # инструмент торгуется малый период
             continue
         if (strdirection == 'long'):
-            if intxcheck_70 in [0, 1]:
-                if (floatEMA_10 >= floatEMA_70):
+            # if intxcheck_70 in [0, 1]:
+            if intxcheck_70 in [0, 1, 2]: # 2 - инструмент торгуется малый период, новый и могут толкнуть
+                if (floatEMA_10 >= floatEMA_70 and floatEMA_70 > 0 ):
                     # Заносим элемент в список если он сегодня торгуется так, что
                     # МА10Д больше МА70Д
                     boollist_ret_append = True
                     intType = 1
-                elif (priceLastDay > floatEMA_10 and
-                      priceLastDay > floatEMA_70):
+                elif (floatEMA_70 == 0 and priceLastDay > floatEMA_10):
+                    #инструмент торгуется малый период, новый и могут толкнуть
+                    # Заносим элемент в список если он сегодня торгуется так, что
+                    # priceLastDay больше floatEMA_10
+                    boollist_ret_append = True
+                    intType = 1
+                elif (priceLastDay > floatEMA_10 and priceLastDay > floatEMA_70):
                     # Заносим элемент в список если он вчера торговался выше
                     # обеих своих скользящих средних
                     boollist_ret_append = True
