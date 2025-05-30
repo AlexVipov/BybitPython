@@ -4,6 +4,10 @@ import shutil
 import traceback
 import webbrowser
 
+import ccxt
+import pandas as pd
+import numpy as np
+import talib as ta
 import pprint
 from time import sleep
 
@@ -22,6 +26,109 @@ gl_strShablon = "Шаблоны\\"
 list_names_main = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'NEARUSDT',
                    'MATICUSDT', 'LTCUSDT']
 
+
+
+def aux_CalculateEMA_ATR(listallsec, timeperiod=10):
+    # Prepare data for numpy and talib
+
+    return_data = []
+    for each in listallsec:
+        if( 0.0 == float(each)):
+            each = 0.000001
+        return_data.append(float(each))
+
+    np_array = np.array(return_data)
+    out = ta.EMA(np_array, timeperiod)
+
+    return
+
+
+def aux_atr_QuikFormula(name, df: pd.DataFrame,
+                        length: int = 14,
+                        bool_EMA: bool = False,
+                        period_EMA: int = 75) -> pd.Series:
+
+    high = []
+    low = []
+    close = []
+    open = []
+    time = []
+    TR = []
+    ATR_Quik = []
+
+    # for elem in df:
+    for i, elem in df.iterrows():
+        high.append(elem.high)
+        low.append(elem.low)
+        open.append(elem.open)
+        close.append(elem.close)
+        time.append(elem.ts)
+        ii = 1
+
+
+    TR.append(abs(high[0] - low[0]))
+    maxcount = high.__len__()
+    for icount in range(1, maxcount):
+        val1 = abs(high[icount] - low[icount])
+        val2 = abs(high[icount] - close[icount-1])
+        val3 = abs(low[icount] - close[icount - 1])
+        val_res = max(val1, val2, val3)
+        TR.append(val_res)
+
+    for icount in range(0, maxcount):
+        if( icount < length):
+            ATR_Quik.append(0)
+        if( icount == length ):
+            val = sum(TR)/length
+            ATR_Quik.append(val)
+        if(icount > length):
+
+            val = (ATR_Quik[icount-1]*(length-1) + TR[icount]) / length
+            ATR_Quik.append(val)
+
+    ii1 = 1
+    # dictionary of lists
+
+    if( False == bool_EMA):
+        dict1 = {'NAME': [name,],
+                'DATE': [time.pop(),],
+                 # 'HIGH': [high.pop(),],
+                 # 'LOW': [low.pop(),],
+                 # 'OPEN': [open.pop(),],
+                 # 'CLOSE': [close.pop(),],
+                 'ATR_DAY': [ATR_Quik.pop(),]}
+    else:
+        EMA75 = aux_CalculateEMA_ATR(ATR_Quik, period_EMA)
+        ii = 1234
+        dict1 = {'NAME': [name, ],
+                 'DATE_TIME': [time.pop(), ],
+                 # 'HIGH': [high.pop(), ],
+                 # 'LOW': [low.pop(), ],
+                 # 'OPEN': [open.pop(), ],
+                 # 'CLOSE': [close.pop(), ],
+                 'ATR_EMA_H1': [EMA75[-1], ]}
+
+    df_Full = pd.DataFrame(dict1)
+
+
+    return df_Full
+
+def fun_CalculateAtr(symbol = "BTCUSDT"):
+
+    sleep(1)
+    exchange = ccxt.bybit()
+
+    dfd_day = pd.DataFrame(exchange.fetch_ohlcv(symbol, "1d", limit=100),
+                  columns=["ts", "open", "high", "low", "close", "volume"])
+
+    dfd_day["ts"] = pd.to_datetime(dfd_day["ts"], unit="ms")
+    # Удаляем последнюю сторку - на сегодня
+    dfd_day = dfd_day.iloc[:-1]
+    # print(dfd_day.tail())
+
+    df_DAY  = aux_atr_QuikFormula ( symbol, dfd_day)
+
+    return df_DAY
 
 
 

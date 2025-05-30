@@ -2,7 +2,8 @@
 from datetime import datetime
 
 from auxfun import fun_createWorkListFromBot, fun_save_ListBotWork, get_listMonets, fun_save_list_workEMA_Work, \
-    fun_save_withdatetime, fun_getListFromBotShablon, gl_strPathSave,fun_createList_Ema_IKD, fun_viewListFiles
+    fun_save_withdatetime, fun_getListFromBotShablon, gl_strPathSave, fun_createList_Ema_IKD, fun_viewListFiles, \
+    fun_CalculateAtr
 
 if __name__ == '__main__':
 
@@ -24,6 +25,8 @@ if __name__ == '__main__':
               "\n 27 - Открыть list_workIKD_1.txt: "
               "\n 28 - Открыть datetime_list___.txt: "
               "\n ============================================== "
+              "\n 29 - Вычислить АТР для ____ "
+              "\n ============================================== "
               )
 
         try:
@@ -35,7 +38,9 @@ if __name__ == '__main__':
                     25 == int_SpecFile or
                     26 == int_SpecFile or
                     27 == int_SpecFile or
-                    28 == int_SpecFile
+                    28 == int_SpecFile or
+                    29 == int_SpecFile
+
             ):
                 bool_repeat = False
 
@@ -73,5 +78,9 @@ if __name__ == '__main__':
         fun_viewListFiles(strFile)
     if (int_SpecFile == 28):
         fun_viewListFiles()
+    if (int_SpecFile == 29):
+        df_atr = fun_CalculateAtr("ZBCNUSDT")
+        strprint = str(df_atr.loc[0, 'NAME']) + ':  ' + str(df_atr.loc[0, 'ATR_DAY'])
+        print(strprint)
 
     pass
