@@ -79,7 +79,7 @@ if __name__ == '__main__':
     if (int_SpecFile == 28):
         fun_viewListFiles()
     if (int_SpecFile == 29):
-        int_error, df_atr = fun_CalculateAtr("DFGKGJUSDT")
+        int_error, df_atr = fun_CalculateAtr()
         if( int_error == 0 ):
             strprint = str(df_atr.loc[0, 'NAME']) + ':  ' + str(df_atr.loc[0, 'ATR_DAY'])
             print(strprint)

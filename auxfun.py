@@ -115,15 +115,19 @@ def aux_atr_QuikFormula(name, df: pd.DataFrame,
 
     return df_Full
 
-def fun_CalculateAtr(symbol = "BTCUSDT"):
-
-    sleep(1)
-    exchange = ccxt.bybit()
+def fun_CalculateAtr():
 
     dfd_day = pd.DataFrame(columns={'ts': datetime, 'open': float, 'high': float,
-        'low': float, 'close': float, 'volume': float })
+                                    'low': float, 'close': float, 'volume': float})
+    strMoney = str(input("Монета: "))
+    if(strMoney == ""):
+        return -1, dfd_day
+
+    exchange = ccxt.bybit()
+
     try:
-        dfd_day = pd.DataFrame(exchange.fetch_ohlcv(symbol, "1d", limit=100),
+        sleep(1)
+        dfd_day = pd.DataFrame(exchange.fetch_ohlcv(strMoney, "1d", limit=100),
             columns=["ts", "open", "high", "low", "close", "volume"])
 
     except Exception as e:
@@ -135,7 +139,7 @@ def fun_CalculateAtr(symbol = "BTCUSDT"):
     dfd_day = dfd_day.iloc[:-1]
     # print(dfd_day.tail())
 
-    df_DAY  = aux_atr_QuikFormula ( symbol, dfd_day)
+    df_DAY  = aux_atr_QuikFormula ( strMoney, dfd_day)
 
     return 0, df_DAY
 
@@ -575,7 +579,9 @@ def fun_save_list_workEMA_Work(list_class_hyph: list, strFileName: str):
 def fun_viewListFiles(str_file = ""):
 
     if( str_file == ""):
-        return
+        strdir = str(input("Директория: "))
+        strfile = str(input("Файл: "))
+        str_file = strdir + '\\' + strfile
 
     list_instruments = []
     try:
