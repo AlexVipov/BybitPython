@@ -21,6 +21,7 @@ from bs4 import BeautifulSoup
 # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
 gl_strPathSave = "D:\\CryptoArchive\\"
 gl_strCurrentWork = "CurrentWork\\"
+gl_strShablon = "Шаблоны\\"
 
 list_names_main = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'NEARUSDT',
                    'MATICUSDT', 'LTCUSDT']
@@ -79,11 +80,13 @@ def get_listMonets(intQvnt=100):
 
     str_file_save = gl_strPathSave + "list_work150.txt"
     write_listelem_to_file(str_file_save, list_instrum)
+    fun_save_withdatetime(str_file_save)
 
     list_workEMA = getinstrbybit70D(list_instrum, 'long')
 
     str_file_save = gl_strPathSave + "list_workEMA.txt"
     write_listelem_to_file(str_file_save, list_workEMA)
+    fun_save_withdatetime(str_file_save)
 
     print('Done list_workEMA.txt')
 
@@ -339,8 +342,9 @@ def fun_open_List_Instruments(list_instr, boolSaveList=True):
         print(strhyper1)
         intCount = intCount + 1
         print(elem)
-        print(intCount)
-        # intNum = data_into_list.__len__() - intCount
+        strprint = str(intCount) + '\\' + str(len(list_instr))
+        print(strprint)
+
 
         while (bool_repeat):
             try:
@@ -647,34 +651,34 @@ def fun_get_choose_bot_file():
                 int_in = int(text)
                 bool_repeat = False
 
-        except ValueError:
-            print('проблема ввода fun_save_AlfaFactorLast')
+        except Exception as e:
+            print('Ошибка:\n', traceback.format_exc())
 
     return text
-def fun_save_AlfaFactorLast():
+def fun_getListFromBotShablon():
 
     # print("Создать Last_***.txt из бота")
     int_in  = int(fun_get_choose_bot_file())
     if( int_in == 0 ):
         return
 
-    strfile = ""
+    strfile = gl_strPathSave + gl_strShablon
     if int_in  == 1:
-        strfile = gl_strPathSave + "AlfaFactor_5_Days.txt"
+        strfile = strfile + "AlfaFactor_5_Days.txt"
     elif (int_in  == 2):
-        strfile = gl_strPathSave + "AlfaFactor_20_Days.txt"
+        strfile = strfile + "AlfaFactor_20_Days.txt"
     elif (int_in  ==3):
-        strfile = gl_strPathSave + "AlfaFactor_60_Days.txt"
+        strfile = strfile + "AlfaFactor_60_Days.txt"
     elif (int_in  == 4):
-        strfile = gl_strPathSave + "AlfaFactor_All_Days.txt"
+        strfile = strfile + "AlfaFactor_All_Days.txt"
     elif (int_in  == 5):
-        strfile = gl_strPathSave + "Vol_4_Days.txt"
+        strfile = strfile + "Vol_4_Days.txt"
     elif (int_in  == 6):
-        strfile = gl_strPathSave + "Vol_10_Days.txt"
+        strfile = strfile + "Vol_10_Days.txt"
     elif (int_in  == 7):
-        strfile = gl_strPathSave + "Vol_20_Days.txt"
+        strfile = strfile + "Vol_20_Days.txt"
     elif (int_in  == 8):
-        strfile = gl_strPathSave + "Adr.txt"
+        strfile = strfile + "Adr.txt"
     else:
         return
     print(strfile)
@@ -684,74 +688,50 @@ def fun_save_AlfaFactorLast():
         with open(strfile, 'r') as f:
             list_instruments = [line[:-1] for line in f]
 
-        #Удаляем четные строки из файла
-        # HUMAUSDT: 330.1333333333 %
-        # график(https: // www.binance.com / ru / trade / HUMA_USDT?layout = pro)
         del list_instruments[1::2]
 
-        # strfile = str_file_new #для exception
-        # with open(str_file_new, 'w') as fp:
-        #     for item in list_instruments:
-        #         # write each item on a new line
-        #         fp.write("%s\n" % item)
-        #     print('Done %s' % str_file_new)
-
-
-    except ValueError:
-        print("Проблема с файлом: %s " % strfile)
-        print(strfile)
+    except Exception as e:
+        print('Ошибка:\n', traceback.format_exc())
 
     return int_in,list_instruments
 
 
 
 
-def fun_get_first_AlfaFactorLast(int_in,list_instruments):
+def fun_createWorkListFromBot(int_in,list_instruments):
+
     list_zapis = list_instruments
+
     strfile_new = ""
-
-    # print("Создать текущий date_time_***_Work.txt из Last_***.txt")
-    # int_in = int(fun_get_choose_bot_file())
-    # if (int_in == 0):
-    #     return list_zapis, strfile_new
-
-    strfile = ""
+    strfile = gl_strPathSave + gl_strCurrentWork
     if int_in == 1:
-        strfile_new =  gl_strPathSave + gl_strCurrentWork + "AlfaFactor_5_Days_Works.txt"
+        strfile_new = strfile  + "AlfaFactor_5_Days_Works.txt"
         str_file = gl_strPathSave + "Last_AlfaFactor_5_Days.txt"
     elif (int_in == 2):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "AlfaFactor_20_Days_Works.txt"
+        strfile_new = strfile + "AlfaFactor_20_Days_Works.txt"
         str_file = gl_strPathSave + "Last_AlfaFactor_20_Days.txt"
     elif (int_in == 3):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "AlfaFactor_60_Days_Works.txt"
+        strfile_new = strfile + "AlfaFactor_60_Days_Works.txt"
         str_file = gl_strPathSave + "Last_AlfaFactor_60_Days.txt"
     elif (int_in == 4):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "AlfaFactor_All_Days_Works.txt"
+        strfile_new = strfile + "AlfaFactor_All_Days_Works.txt"
         str_file = gl_strPathSave + "Last_AlfaFactor_All_Days.txt"
     elif (int_in == 5):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "Vol_4_Days_Works.txt"
+        strfile_new = strfile + "Vol_4_Days_Works.txt"
         str_file = gl_strPathSave + "Last_Vol_4_Days.txt"
     elif (int_in == 6):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "Vol_10_Days_Works.txt"
+        strfile_new = strfile + "Vol_10_Days_Works.txt"
         str_file = gl_strPathSave + "Last_Vol_10_Days.txt"
     elif (int_in == 7):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "Vol_20_Days_Works.txt"
+        strfile_new = strfile + "Vol_20_Days_Works.txt"
         str_file = gl_strPathSave + "Last_Vol_20_Days.txt"
     elif (int_in == 8):
-        strfile_new = gl_strPathSave + gl_strCurrentWork + "Adr_Works.txt"
+        strfile_new = strfile + "Adr_Works.txt"
         str_file = gl_strPathSave + "Last_Adr.txt"
     else:
         return list_zapis, strfile_new
     print(str_file)
     print(strfile_new)
-
-    # try:
-    #     with open(str_file, 'r') as f:
-    #         list_zapis = [line[:-1] for line in f]
-    #
-    # except Exception as e:
-    #     print('Ошибка:\n', traceback.format_exc())
-    #     return list_zapis, strfile_new
 
     if( int_in in [1,2,3,4]):
         int_SpecFile = 0
@@ -771,7 +751,10 @@ def fun_get_first_AlfaFactorLast(int_in,list_instruments):
         else:
             list_zapis.clear()
 
-    return list_zapis,strfile_new
+    if (len(list_zapis) != 0):
+        list_class_work = fun_open_List_Instruments(list_zapis)
+
+    return list_class_work,strfile_new
 
 def fun_save_fileTV(strFileName):
     str_file = gl_strPathSave + "CryptoShort\\" + strFileName + ".txt"
@@ -812,29 +795,27 @@ def fun_save_FileWork(list_class_hyph: list, strFileName: str):
                     fp.write("%s\n" % str1)
             print('Done list_huper')
 
-    except ValueError:
-        print("Проблема с файлом: ")
+    except Exception as e:
+        print('Ошибка:\n', traceback.format_exc())
         print(strFileName)
+
     return
 
-def fun_save_ListWorkLast(list_class_hyph: list, strFileName: str):
-
-    if (len(list_class_hyph) != 0):
-        list_class_work = fun_open_List_Instruments(list_class_hyph)
+def fun_save_ListBotWork(list_class_hyph: list, strFileName: str):
 
     try:
         with open(strFileName, 'w') as fp:
-            for item in list_class_work:
+            for item in list_class_hyph:
                 # write each item on a new line
                 if ("" != item.hyper):
-
                     str1 = item.hyper + ' ' + str(item.prc)
                     fp.write("%s\n" % str1)
             print('Done list_huper')
 
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(strFileName)
+
+    except Exception as e:
+        print('++++++ Ошибка +++++:\n' + traceback.format_exc())
+
     return
 
 
@@ -934,6 +915,8 @@ def fun_get_Shilin(boolShilin=True):
 
             except ValueError:
                 print('Недопустимый ввод, введите число')
+            except Exception as e:
+                print('++++++ Ошибка +++++:\n' + traceback.format_exc())
 
     return list_class_hyphe
 
@@ -987,9 +970,9 @@ def fun_get_List_PreWork():
 
     return list_class_hyphe
 
-def fun_get_List_File_Ema_Old(str_file, intTypeOpen=0):
-    list_instruments = []
+def fun_viewListFiles(str_file, intTypeOpen=0):
 
+    list_instruments = []
     try:
         with open(str_file, 'r') as f:
             list_instruments = [line[:-1] for line in f]
@@ -997,6 +980,8 @@ def fun_get_List_File_Ema_Old(str_file, intTypeOpen=0):
     except ValueError:
         print("Проблема с файлом: ")
         print(str_file)
+    except Exception as e:
+        print('++++++ Ошибка +++++:\n' + traceback.format_exc())
 
     bool_repeat = True
     intType = 0
@@ -1009,16 +994,11 @@ def fun_get_List_File_Ema_Old(str_file, intTypeOpen=0):
 
         except ValueError:
             print('Недопустимый ввод, введите число')
+        except Exception as e:
+            print('++++++ Ошибка +++++:\n' + traceback.format_exc())
 
-    # intCount = 0
-
-    # strBrowse = 'https://www.bybit.com/trade/usdt/'
-    list_class_hyphe = []
-    list_class_IKD = []
     for intCount, elem in enumerate(list_instruments):
         text = elem
-        hyper = ''
-        cypher = ''
         try:
             hyper = text.split()
             intCypher = int(hyper[1])
@@ -1026,31 +1006,22 @@ def fun_get_List_File_Ema_Old(str_file, intTypeOpen=0):
                 strBrowseHyper = 'https://www.bybit.com/trade/usdt/' + str(hyper[0])
                 webbrowser.open(strBrowseHyper)  # Go to example.com
 
-                # intCount = intCount + 1
                 print(elem)
                 strfullprint = str(intCount) + '/' + str(len(list_instruments))
                 print(strfullprint)
             else:
                 continue
-        except:
-            hyper = text
+        except Exception as e:
+            print('++++++ Ошибка +++++:\n' + traceback.format_exc())
+
 
         bool_repeat = True
 
         while (bool_repeat):
             try:
                 if (intTypeOpen == 0):
-                    text = input("type Enter for skip\nor 2 - list_workIKD_1.txt\nor 3 - list_workEMA_1.txt :")
-                    if text == "":
-                        bool_repeat = False
-                    elif( text == "3"):
-                        strelem = str(hyper[0]) + ' ' + str(hyper[1])
-                        list_class_hyphe.append(strelem)
-                        bool_repeat = False
-                    elif (text == "2"):
-                        strelem = str(hyper[0]) + ' ' + str(hyper[1])
-                        list_class_IKD.append(strelem)
-                        bool_repeat = False
+                    text = input("type Enter for next:")
+                    bool_repeat = False
                 elif (intTypeOpen == 1):
                     text = input("type Enter for next:")
                     bool_repeat = False
@@ -1058,10 +1029,12 @@ def fun_get_List_File_Ema_Old(str_file, intTypeOpen=0):
 
             except ValueError:
                 print('Недопустимый ввод, введите число')
+            except Exception as e:
+                print('++++++ Ошибка +++++:\n' + traceback.format_exc())
 
-    return list_class_hyphe, list_class_IKD
+    return
 
-def fun_get_List_File_Ema(str_file, intTypeOpen=0):
+def fun_createList_Ema_IKD(str_file, intTypeOpen=0):
     list_instruments = []
 
     try:
@@ -1074,18 +1047,17 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
 
     bool_repeat = True
     intType = 0
-    # if( intTypeOpen != 2 ):
-    #     while (bool_repeat):
-    #         try:
-    #             text = input("Введите число:\n0 - тип1 и тип2: \n1 - тип1: \n2 - тип2: ")
-    #             if (int(text) == 0 or int(text) == 1 or int(text) == 2):
-    #                 intType = int(text)
-    #                 bool_repeat = False
-    #
-    #         except ValueError:
-    #             print('Недопустимый ввод, введите число')
+    if( intTypeOpen != 2 ):
+        while (bool_repeat):
+            try:
+                text = input("Введите число:\n0 - тип1 и тип2: \n1 - тип1: \n2 - тип2: ")
+                if (int(text) == 0 or int(text) == 1 or int(text) == 2):
+                    intType = int(text)
+                    bool_repeat = False
 
-    # strBrowse = 'https://www.bybit.com/trade/usdt/'
+            except ValueError:
+                print('Недопустимый ввод, введите число')
+
     list_class_hyphe = []
     list_class_IKD = []
     for intCount, elem in enumerate(list_instruments):
@@ -1095,7 +1067,6 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
         try:
             hyper = text.split()
             intCypher = int(hyper[1])
-            # if (0 == intType or intType == intCypher): ??????????????????????????????????
             strBrowseHyper = 'https://www.bybit.com/trade/usdt/' + str(hyper[0])
             webbrowser.open(strBrowseHyper)  # Go to example.com
 

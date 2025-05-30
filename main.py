@@ -1,12 +1,12 @@
 
 from datetime import datetime
 
-from auxfun import get_list_instrums, fun_convert, fun_clear_LongList, fun_get_Shilin, fun_save_ListWorkLast, \
+from auxfun import get_list_instrums, fun_convert, fun_clear_LongList, fun_get_Shilin, \
     fun_save_fileTV, fun_get_List_PreWork, fun_get_ListWorkLast, fun_save_withtime_ListWorkLast, fun_save_volatileLast, \
     fun_get_ShilinVolatile_NDays_Instruments, fun_open_List_Instruments, \
-    fun_get_first_AlfaFactorLast, get_listMonets, fun_save_list_workEMA_Work, fun_get_List_File_Ema, fun_save_AdrLast, \
-    fun_createAdrVolAlfa, fun_save_withdatetime, fun_save_AlfaFactorLast, gl_strPathSave, gl_strCurrentWork, \
-    fun_get_List_File_Ema_Old
+    fun_createWorkListFromBot, fun_save_ListBotWork, get_listMonets, fun_save_list_workEMA_Work, \
+    fun_createAdrVolAlfa, fun_save_withdatetime, fun_getListFromBotShablon, gl_strPathSave, gl_strCurrentWork, \
+    fun_createList_Ema_IKD, fun_viewListFiles
 
 if __name__ == '__main__':
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
               # "\n 22 - Файл( N ), создать cryptowork.txt: "
               "\n ============================================== "
               "\n 23 - Cоздать list_workEMA.txt и list_work150.txt: "
-              "\n 24 - Открыть list_workEMA.txt и создать list_workEMA_Work.txt: "
+              "\n 24 - Открыть list_workEMA.txt и создать list_workEMA_1\\list_workIKD_1 : "
               "\n 25 - Открыть list_work150.txt: "
               "\n 26 - Открыть list_workEMA_1.txt: "
               "\n 27 - Открыть list_workIKD_1.txt: "
@@ -102,54 +102,62 @@ if __name__ == '__main__':
 
     # list_class_hyp = []
     if (int_SpecFile == 0):
-        list_class_hyp = fun_get_Shilin()
-        fun_save_ListWorkLast(list_class_hyp, 'cryptowork.txt')
-        fun_save_fileTV('cryptowork')
+        ...
+        # list_class_hyp = fun_get_Shilin()
+        # fun_save_ListWorkLast(list_class_hyp, 'cryptowork.txt')
+        # fun_save_fileTV('cryptowork')
     elif (int_SpecFile == 1):
-        list_class_hyp = fun_get_List_PreWork()
-        fun_save_ListWorkLast(list_class_hyp, "LastCrypto.txt")
-        fun_save_fileTV('LastCrypto')
+        ...
+        # list_class_hyp = fun_get_List_PreWork()
+        # fun_save_ListWorkLast(list_class_hyp, "LastCrypto.txt")
+        # fun_save_fileTV('LastCrypto')
     elif (int_SpecFile == 2):
-        fun_get_ListWorkLast("LastCrypto.txt")
+        ...
+        # fun_get_ListWorkLast("LastCrypto.txt")
     elif (int_SpecFile == 3):
-        fun_save_withtime_ListWorkLast("cryptowork")
+        ...
+        # fun_save_withtime_ListWorkLast("cryptowork")
     elif (int_SpecFile == 4):
-        fun_save_withtime_ListWorkLast()
+        ...
+        # fun_save_withtime_ListWorkLast()
     elif (int_SpecFile == 5):
-        fun_save_volatileLast(4)
+        ...
+        # fun_save_volatileLast(4)
     elif (int_SpecFile == 6):
-        list_instr = fun_get_ShilinVolatile_NDays_Instruments(4)
-        fun_open_List_Instruments(list_instr)
+        ...
+        # list_instr = fun_get_ShilinVolatile_NDays_Instruments(4)
+        # fun_open_List_Instruments(list_instr)
     elif (int_SpecFile == 7):
-        fun_save_withtime_ListWorkLast("Last_4Days")
+        ...
+        # fun_save_withtime_ListWorkLast("Last_4Days")
 
     elif (int_SpecFile == 8):
-        int_in,list_instruments = fun_save_AlfaFactorLast()
-        list_open, strFileZps = fun_get_first_AlfaFactorLast(int_in, list_instruments)
-        fun_save_ListWorkLast(list_open, strFileZps)
-        ...
+        int_in,list_instruments = fun_getListFromBotShablon()
+        list_zapis, strFileZps = fun_createWorkListFromBot(int_in, list_instruments)
+        fun_save_ListBotWork(list_zapis, strFileZps)
+        fun_save_withdatetime(strFileZps)
     # elif (int_SpecFile == 9):
     #     list_open, strFileZps = fun_get_first_AlfaFactorLast(int_in, list_instruments)
     #     fun_save_ListWorkLast(list_open, strFileZps)
-
     elif (int_SpecFile == 10):
-        fun_save_withtime_ListWorkLast("Last_AlfaFactor")
+        ...
+        # fun_save_withtime_ListWorkLast("Last_AlfaFactor")
     elif (int_SpecFile == 20):
-        fun_get_ListWorkLast("AlfaWork.txt")
+        ...
+        # fun_get_ListWorkLast("AlfaWork.txt")
     elif (int_SpecFile == 21):
-        fun_save_withtime_ListWorkLast("AlfaWork")
+        ...
+        # fun_save_withtime_ListWorkLast("AlfaWork")
     if (int_SpecFile == 22):
-        list_class_hyp = fun_get_Shilin(False)
-        fun_save_ListWorkLast(list_class_hyp, 'cryptowork.txt')
-        fun_save_fileTV('cryptowork')
+        ...
+        # list_class_hyp = fun_get_Shilin(False)
+        # fun_save_ListWorkLast(list_class_hyp, 'cryptowork.txt')
+        # fun_save_fileTV('cryptowork')
     if (int_SpecFile == 23):
         get_listMonets()  # intQvnt=150
     if (int_SpecFile == 24):
         strFile = gl_strPathSave + "list_workEMA.txt"
-        list_class_EMA, list_class_IKD = fun_get_List_File_Ema(strFile, 0)
-        # str_time = datetime.now().strftime('%H_%M_%S')
-        # str_date = datetime.now().strftime('%Y_%m_%d')
-        # str_prefix = str_date + "-" + str_time
+        list_class_EMA, list_class_IKD = fun_createList_Ema_IKD(strFile, 0)
         if (len(list_class_EMA) > 0):
             strFile = gl_strPathSave + "list_workEMA_1.txt"
             fun_save_list_workEMA_Work(list_class_EMA, strFile)
@@ -160,43 +168,50 @@ if __name__ == '__main__':
             fun_save_withdatetime(strFile)
     if (int_SpecFile == 25):
         strFile = gl_strPathSave + "list_work150.txt"
-        fun_get_List_File_Ema_Old(strFile, 0)
+        fun_viewListFiles(strFile, 0)
     if (int_SpecFile == 26):
         strFile = gl_strPathSave + "list_workEMA_1.txt"
-        list_class_EMA = fun_get_List_File_Ema_Old(strFile, 1)
+        fun_viewListFiles(strFile, 0)
     if (int_SpecFile == 27):
         strFile = gl_strPathSave + "list_workIKD_1.txt"
-        list_class_EMA = fun_get_List_File_Ema_Old(strFile, 1)
+        fun_viewListFiles(strFile, 0)
     if (int_SpecFile == 28):
-        # gl_strPathSave = "D:\\CryptoArchive\\"
-        # gl_strCurrentWork = "CurrentWork\\"
-        strprint  = "Введите имя файла в dir = " + gl_strPathSave + gl_strCurrentWork + " :"
-        textFile = input(strprint)
-        strFile = gl_strPathSave + textFile
-        list_class_EMA = fun_get_List_File_Ema(strFile, 2)
+        ...
+        # strprint  = "Введите имя файла в dir = " + gl_strPathSave + gl_strCurrentWork + " :"
+        # textFile = input(strprint)
+        # strFile = gl_strPathSave + textFile
+        # list_class_EMA = fun_get_List_File_Ema(strFile, 2)
 
     elif (int_SpecFile == 11):
-        fun_save_volatileLast(10)
+        ...
+        # fun_save_volatileLast(10)
     elif (int_SpecFile == 12):
-        list_instr = fun_get_ShilinVolatile_NDays_Instruments(10)
-        fun_open_List_Instruments(list_instr)
+        ...
+        # list_instr = fun_get_ShilinVolatile_NDays_Instruments(10)
+        # fun_open_List_Instruments(list_instr)
     elif (int_SpecFile == 13):
-        fun_save_withtime_ListWorkLast("Last_10Days")
+        ...
+        # fun_save_withtime_ListWorkLast("Last_10Days")
     elif (int_SpecFile == 14):
-        fun_save_AdrLast()
+        ...
+        # fun_save_AdrLast()
     elif (int_SpecFile == 15):
-        list_instr = fun_get_ShilinVolatile_NDays_Instruments("Adr")
-        list_class_hyp = fun_open_List_Instruments(list_instr)
-        fun_save_ListWorkLast(list_class_hyp, "AdrWork.txt")
-        fun_save_fileTV('AdrWork')
+        ...
+        # list_instr = fun_get_ShilinVolatile_NDays_Instruments("Adr")
+        # list_class_hyp = fun_open_List_Instruments(list_instr)
+        # fun_save_ListWorkLast(list_class_hyp, "AdrWork.txt")
+        # fun_save_fileTV('AdrWork')
     elif (int_SpecFile == 16):
-        fun_save_withtime_ListWorkLast("Last_Adr")
+        ...
+        # fun_save_withtime_ListWorkLast("Last_Adr")
     elif (int_SpecFile == 17):
-        list_instr = fun_createAdrVolAlfa()
-        list_class_hyp = fun_open_List_Instruments(list_instr)
-        fun_save_ListWorkLast(list_class_hyp, 'cryptowork_Combi.txt')
+        ...
+        # list_instr = fun_createAdrVolAlfa()
+        # list_class_hyp = fun_open_List_Instruments(list_instr)
+        # fun_save_ListWorkLast(list_class_hyp, 'cryptowork_Combi.txt')
     elif (int_SpecFile == 18):
-        fun_save_withtime_ListWorkLast("cryptowork_Combi")
+        ...
+        # fun_save_withtime_ListWorkLast("cryptowork_Combi")
     elif (int_SpecFile == 19):
         pass
         # list_instr = fun_get_ShilinVolatile_NDays_Instruments("cryptowork_Combi")
