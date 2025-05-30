@@ -14,20 +14,22 @@ if __name__ == '__main__':
     while (bool_repeat):
         print("Выбор пункта:"
               "\n ============================================== "
-              "\n 8 -  Создать ***_Work.txt из бота: "
+              "\n 8 - Создать ***_Work.txt из бота: "
+              "\n 9 - Открыть datetime_bot___.txt: "
               "\n ============================================== "
               "\n 23 - Cоздать list_workEMA.txt и list_work150.txt: "
-              "\n 24 - Открыть list_workEMA.txt и создать list_workEMA_1\\list_workIKD_1 : "
+              "\n 24 - Открыть list_workEMA.txt и создать list_workEMA_1\\list_workIKD_1: "
               "\n 25 - Открыть list_work150.txt: "
               "\n 26 - Открыть list_workEMA_1.txt: "
               "\n 27 - Открыть list_workIKD_1.txt: "
-              "\n 28 - Открыть ___.txt: "
+              "\n 28 - Открыть datetime_list___.txt: "
               "\n ============================================== "
               )
 
         try:
             int_SpecFile = int(input('Число: '))
             if ( 8 == int_SpecFile or
+                    9 == int_SpecFile or
                     23 == int_SpecFile or
                     24 == int_SpecFile or
                     25 == int_SpecFile or
@@ -45,6 +47,8 @@ if __name__ == '__main__':
         list_zapis, strFileZps = fun_createWorkListFromBot(int_in, list_instruments)
         fun_save_ListBotWork(list_zapis, strFileZps)
         fun_save_withdatetime(strFileZps)
+    if (int_SpecFile == 9):
+        ...
     if (int_SpecFile == 23):
         get_listMonets()  # intQvnt=150
     if (int_SpecFile == 24):
@@ -60,18 +64,14 @@ if __name__ == '__main__':
             fun_save_withdatetime(strFile)
     if (int_SpecFile == 25):
         strFile = gl_strPathSave + "list_work150.txt"
-        fun_viewListFiles(strFile, 0)
+        fun_viewListFiles(strFile)
     if (int_SpecFile == 26):
         strFile = gl_strPathSave + "list_workEMA_1.txt"
-        fun_viewListFiles(strFile, 0)
+        fun_viewListFiles(strFile)
     if (int_SpecFile == 27):
         strFile = gl_strPathSave + "list_workIKD_1.txt"
-        fun_viewListFiles(strFile, 0)
+        fun_viewListFiles(strFile)
     if (int_SpecFile == 28):
-        ...
-        # strprint  = "Введите имя файла в dir = " + gl_strPathSave + gl_strCurrentWork + " :"
-        # textFile = input(strprint)
-        # strFile = gl_strPathSave + textFile
-        # list_class_EMA = fun_get_List_File_Ema(strFile, 2)
+        fun_viewListFiles()
 
     pass

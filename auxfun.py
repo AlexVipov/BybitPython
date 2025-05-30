@@ -456,7 +456,10 @@ def fun_save_list_workEMA_Work(list_class_hyph: list, strFileName: str):
     return
 
 
-def fun_viewListFiles(str_file, intTypeOpen=0):
+def fun_viewListFiles(str_file = ""):
+
+    if( str_file == ""):
+        return
 
     list_instruments = []
     try:
@@ -500,24 +503,7 @@ def fun_viewListFiles(str_file, intTypeOpen=0):
         except Exception as e:
             print('++++++ Ошибка +++++:\n' + traceback.format_exc())
 
-
-        bool_repeat = True
-
-        while (bool_repeat):
-            try:
-                if (intTypeOpen == 0):
-                    text = input("type Enter for next:")
-                    bool_repeat = False
-                elif (intTypeOpen == 1):
-                    text = input("type Enter for next:")
-                    bool_repeat = False
-
-
-            except ValueError:
-                print('Недопустимый ввод, введите число')
-            except Exception as e:
-                print('++++++ Ошибка +++++:\n' + traceback.format_exc())
-
+        input("type Enter for next:")
     return
 
 def fun_createList_Ema_IKD(str_file, intTypeOpen=0):
