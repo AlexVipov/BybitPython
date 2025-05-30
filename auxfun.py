@@ -987,8 +987,7 @@ def fun_get_List_PreWork():
 
     return list_class_hyphe
 
-
-def fun_get_List_File_Ema(str_file, intTypeOpen=0):
+def fun_get_List_File_Ema_Old(str_file, intTypeOpen=0):
     list_instruments = []
 
     try:
@@ -1059,6 +1058,81 @@ def fun_get_List_File_Ema(str_file, intTypeOpen=0):
 
             except ValueError:
                 print('Недопустимый ввод, введите число')
+
+    return list_class_hyphe, list_class_IKD
+
+def fun_get_List_File_Ema(str_file, intTypeOpen=0):
+    list_instruments = []
+
+    try:
+        with open(str_file, 'r') as f:
+            list_instruments = [line[:-1] for line in f]
+
+    except ValueError:
+        print("Проблема с файлом: ")
+        print(str_file)
+
+    bool_repeat = True
+    intType = 0
+    # if( intTypeOpen != 2 ):
+    #     while (bool_repeat):
+    #         try:
+    #             text = input("Введите число:\n0 - тип1 и тип2: \n1 - тип1: \n2 - тип2: ")
+    #             if (int(text) == 0 or int(text) == 1 or int(text) == 2):
+    #                 intType = int(text)
+    #                 bool_repeat = False
+    #
+    #         except ValueError:
+    #             print('Недопустимый ввод, введите число')
+
+    # strBrowse = 'https://www.bybit.com/trade/usdt/'
+    list_class_hyphe = []
+    list_class_IKD = []
+    for intCount, elem in enumerate(list_instruments):
+        text = elem
+        hyper = ''
+        cypher = ''
+        try:
+            hyper = text.split()
+            intCypher = int(hyper[1])
+            # if (0 == intType or intType == intCypher): ??????????????????????????????????
+            strBrowseHyper = 'https://www.bybit.com/trade/usdt/' + str(hyper[0])
+            webbrowser.open(strBrowseHyper)  # Go to example.com
+
+            # intCount = intCount + 1
+            print(elem)
+            strfullprint = str(intCount) + '/' + str(len(list_instruments))
+            print(strfullprint)
+            # else:
+            #     continue
+        except:
+            hyper = text
+
+        bool_repeat = True
+
+        while (bool_repeat and intTypeOpen != 2):
+            try:
+                if (intTypeOpen == 0):
+                    text = input("type Enter for skip\nor 2 - list_workIKD_1.txt\nor 3 - list_workEMA_1.txt :")
+                    if text == "":
+                        bool_repeat = False
+                    elif( text == "3"):
+                        strelem = str(hyper[0]) + ' ' + str(hyper[1])
+                        list_class_hyphe.append(strelem)
+                        bool_repeat = False
+                    elif (text == "2"):
+                        strelem = str(hyper[0]) + ' ' + str(hyper[1])
+                        list_class_IKD.append(strelem)
+                        bool_repeat = False
+                elif (intTypeOpen == 1):
+                    text = input("type Enter for next:")
+                    bool_repeat = False
+
+            except ValueError:
+                print('Недопустимый ввод, введите число')
+
+        if( intTypeOpen == 2):
+            text = input("type Enter for skip\nor 2 - list_workIKD_1.txt\nor 3 - list_workEMA_1.txt :")
 
     return list_class_hyphe, list_class_IKD
 
