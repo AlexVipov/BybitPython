@@ -4,7 +4,6 @@ import shutil
 import traceback
 import webbrowser
 
-import requests
 import pprint
 from time import sleep
 
@@ -12,11 +11,8 @@ import numpy as nm
 import talib as ta
 import locale
 
-import operator
 import requests
 from datetime import datetime
-
-from bs4 import BeautifulSoup
 
 # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
 gl_strPathSave = "D:\\CryptoArchive\\"
@@ -113,77 +109,6 @@ def write_listelem_to_file(str_file_save, list_elem):
 
     return
 
-
-def fun_get_ListWork70(str_file_in="list_work70.txt"):
-    list_class_hyp = []
-
-    if str_file_in == "":
-        bool_repeat = True
-        while (bool_repeat):
-            try:
-                text = input("type Enter for ListWork70\nили имя файла:")
-                if text == "":
-                    str_file_in = ""
-                    bool_repeat = False
-                else:
-                    str_file_in = text
-                    bool_repeat = False
-
-            except ValueError:
-                print('Недопустимый ввод, введите имя файла')
-
-    list_instruments = []
-    if (str_file_in == ""):
-        str_file = gl_strPathSave + "list_work70.txt"
-    else:
-        str_file = gl_strPathSave + str_file_in
-
-    with open(str_file, 'r') as f:
-        list_instruments = [line[:-1] for line in f]
-
-    int_count = 0
-    intcountelem = len(list_instruments)
-
-    for elem in list_instruments:
-
-        hyper = 'https://www.bybit.com/trade/usdt/' + elem
-        print(hyper)  # Вывод: foo
-        webbrowser.open(hyper)  # Go to example.com
-
-        int_count = int_count + 1
-        str_print = str(int_count) + r'/' + str(intcountelem)
-        print(str_print)
-        bool_repeat = True
-
-        while (bool_repeat):
-            try:
-                text = input("type Enter for skip\nor any value to save:")
-                if text == "":
-                    bool_repeat = False
-                else:
-                    list_class_hyp.append(hyper)
-                    bool_repeat = False
-
-            except ValueError:
-                print('Недопустимый ввод, введите число')
-
-    return list_class_hyp
-
-
-def moving_average(x, n, type='exp'):
-    x = nm.asarray(x)
-    if type == 'simple':
-        weights = nm.ones(n)
-    else:
-        weights = nm.exp(nm.linspace(-1., 0., n))
-
-    weights /= weights.sum()
-
-    a = nm.convolve(x, weights, mode='full')[:len(x)]
-    a[:n] = a[n]
-    return a
-
-
 # Функция подсчета среднего на основе библиотеки  talib
 def CalculateEMA(listallsec, timeperiod=10):
     # Prepare data for numpy and talib
@@ -196,22 +121,6 @@ def CalculateEMA(listallsec, timeperiod=10):
     out = ta.EMA(np_array, timeperiod)
 
     return out[-1]
-
-
-def CalculateEMA_ATR(listallsec, timeperiod=10):
-    # Prepare data for numpy and talib
-
-    return_data = []
-    for each in listallsec:
-        if (0.0 == float(each)):
-            each = 0.000001
-        return_data.append(float(each))
-
-    np_array = nm.array(return_data)
-    out = ta.EMA(np_array, timeperiod)
-
-    return out[-1]
-
 
 def getkindle(strinstr, strcategory, strperiod, strlimit, intEMAPER=10):
     list_close = []
@@ -367,261 +276,6 @@ def fun_open_List_Instruments(list_instr, boolSaveList=True):
 
     return list_class_hyp1
 
-
-def fun_createAdrVolAlfa():
-    print("fun_createAdrVolAlfa")
-
-    str_fileAdr = gl_strPathSave + "CryptoShort\\Last_Adr.txt"
-    str_fileVol = gl_strPathSave + "CryptoShort\\Last_4Days.txt"
-    str_fileAlfa = gl_strPathSave + "CryptoShort\\Last_AlfaFactor.txt"
-
-    listAdr = []
-    listVol = []
-    listAlfa = []
-
-    strProblema = ""
-    try:
-        strProblema = "str_fileAdr"
-        with open(str_fileAdr, 'r') as f:
-            listAdr = [line[:-1] for line in f]
-        listAdr = fun_clearListInstrs(listAdr)
-
-        strProblema = "str_fileVol"
-        with open(str_fileVol, 'r') as f:
-            listVol = [line[:-1] for line in f]
-        listVol = fun_getVolatile(listVol)
-        listVol = fun_clearListInstrs(listVol)
-
-        strProblema = "str_fileAlfa"
-        with open(str_fileAlfa, 'r') as f:
-            listAlfa = [line[:-1] for line in f]
-
-        listAlfa = fun_getAlfa(listAlfa)
-        listAlfa = fun_clearListInstrs(listAlfa)
-
-        new_list = listAdr + listVol + listAlfa
-        list_res = []  # создаем список, в котором
-        # будут храниться уникальные элементы
-        for strelem in new_list:
-            if strelem not in list_res:  # проверка на наличие элемента в списке
-                strelem = strelem
-                list_res.append(strelem)  # добавляем новый элемент
-
-        list_res2 = []
-        for strelem in list_res:
-            strelem = strelem + ':'
-            list_res2.append(strelem)  # добавляем новый элемент
-        print(list_res2)
-
-        str_file_combi = gl_strPathSave + "CryptoShort\\LastCombi.txt"
-        strProblema = str_file_combi
-        with open(str_file_combi, 'w') as fp:
-            int_count = 0
-            for item in list_res2:
-                fp.write("%s\n" % item)
-
-            print('Done Last_Combi.txt')
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(strProblema)
-
-    return list_res2
-
-
-def fun_getVolatile(listVol):
-    listVolNew = []
-
-    for strelem in listVol:
-        if "-1.0" in strelem:
-            listVolNew.append(strelem)
-
-    return listVolNew
-
-
-def fun_getAlfa(listAlfa):
-    listAlfaNew = []
-
-    str_SpecAlfa = "+"
-    boolRepeat = True
-    while (boolRepeat):
-        str_SpecAlfa = str(input('(-) для падения\n(+) для роста: '))
-        if "+" == str_SpecAlfa:
-            boolRepeat = False
-            for strelem in listAlfa:
-                if "-" not in strelem:
-                    listAlfaNew.append(strelem)
-        elif "-" == str_SpecAlfa:
-            boolRepeat = False
-            for strelem in listAlfa:
-                if "-" in strelem:
-                    listAlfaNew.append(strelem)
-
-    return listAlfaNew
-
-
-def fun_get_ListWorkLast(str_file_in="LastCrypto.txt"):
-    list_class_hyp3 = []
-    if str_file_in == "":
-        bool_repeat = True
-        while (bool_repeat):
-            try:
-                text = input("type Enter for LastCrypto\nили имя файла:")
-                if text == "":
-                    str_file_in = ""
-                    bool_repeat = False
-                else:
-                    str_file_in = text
-                    bool_repeat = False
-
-            except ValueError:
-                print('Недопустимый ввод, введите имя файла')
-
-    list_instruments = []
-    if (str_file_in == ""):
-        str_file = gl_strPathSave + "CryptoShort\\LastCrypto.txt"
-    else:
-        str_file = gl_strPathSave + "CryptoShort\\" + str_file_in
-
-    with open(str_file, 'r') as f:
-        list_instruments = [line[:-1] for line in f]
-
-    int_count = 0
-    intcountelem = len(list_instruments)
-
-    for elem in list_instruments:
-
-        text = elem
-        hyper = ""
-        try:
-            separator_old, hyper = text.split('#', 1)
-            if str_file_in == "LastCrypto.txt":
-                separator_new, hyper = hyper.split('#', 1)
-
-        except:
-            hyper = text
-
-        print(hyper)  # Вывод: foo
-        webbrowser.open(hyper)  # Go to example.com
-
-        int_count = int_count + 1
-        str_print = str(int_count) + r'/' + str(intcountelem)
-        print(str_print)
-        bool_repeat = True
-
-        while (bool_repeat):
-            try:
-                text = input("type Enter for next:")
-                if text == "":
-                    bool_repeat = False
-
-            except ValueError:
-                print('Недопустимый ввод, введите число')
-
-        #
-        # time.sleep(13)
-
-    return list_class_hyp3
-
-def fun_clearListInstrs(listInstrs):
-    listInstrlNew = []
-
-    for elem in listInstrs:
-
-        text = elem
-        hyper = ""
-        try:
-            separator_old, hyper = text.split(':', 1)
-            listInstrlNew.append(separator_old)
-
-        except:
-            print("Exception : ")
-            print(elem)  # Вывод: foo
-
-    return listInstrlNew
-
-
-def get_N_instruments():
-    intInstMax = 100
-    list_simple = get_list_instrums(intInstMax)
-
-def fun_save_volatileLast(intDays):
-    list_instruments = []
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    strDays = str(intDays)
-    str_file = gl_strPathSave + strDays + "Days.txt"
-
-    try:
-        with open(str_file, 'r') as f:
-            list_instruments = [line[:-1] for line in f]
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-
-    del list_instruments[1::2]
-
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file_new = gl_strPathSave + "CryptoShort\\Last_" + strDays + "Days.txt"
-    try:
-        with open(str_file_new, 'w') as fp:
-            for item in list_instruments:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-            print('Done Last_N_Days.txt')
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-    return
-
-
-def fun_save_AdrLast():
-    list_instruments = []
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file = gl_strPathSave + "Adr.txt"
-
-    try:
-        with open(str_file, 'r') as f:
-            list_instruments = [line[:-1] for line in f]
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-
-    del list_instruments[1::2]
-
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file_new = gl_strPathSave + "CryptoShort\\Last_Adr.txt"
-    try:
-        with open(str_file_new, 'w') as fp:
-            for item in list_instruments:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-            print('Done Last_Adr.txt')
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-    return
-
-def fun_get_ShilinVolatile_NDays_Instruments(intNdays):
-    list_instruments = []
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    strNdDays = str(intNdays)
-    str_file = gl_strPathSave + "CryptoShort\\Last_" + strNdDays + "Days.txt"
-    if (intNdays == "Adr"):
-        str_file = gl_strPathSave + "CryptoShort\\Last_Adr.txt"
-
-    try:
-        with open(str_file, 'r') as f:
-            list_instr = [line[:-1] for line in f]
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-
-    return list_instr
-
 def fun_get_choose_bot_file():
 
     bool_repeat = True
@@ -695,9 +349,6 @@ def fun_getListFromBotShablon():
 
     return int_in,list_instruments
 
-
-
-
 def fun_createWorkListFromBot(int_in,list_instruments):
 
     list_zapis = list_instruments
@@ -756,34 +407,6 @@ def fun_createWorkListFromBot(int_in,list_instruments):
 
     return list_class_work,strfile_new
 
-def fun_save_fileTV(strFileName):
-    str_file = gl_strPathSave + "CryptoShort\\" + strFileName + ".txt"
-    list_in = []
-    list_instrums = []
-    try:
-        strProb = "Проблема fun_save_fileTV 1 "
-        with open(str_file, 'r') as f:
-            list_in = [line[:-1] for line in f]
-
-        strProb = "Проблема fun_save_fileTV 2 "
-        for elem in list_in:
-            text = elem
-            hyper = text.split('/', -1)
-            list_instrums.append(hyper.pop())
-
-        str_file = gl_strPathSave + "CryptoShort\\" + strFileName + "_TV.txt"
-        strProb = "Проблема fun_save_fileTV 3 "
-        list_instrums.sort()
-        with open(str_file, 'w') as fp:
-            for item in list_instrums:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-
-    except Exception as e:
-        print('Ошибка:\n', traceback.format_exc())
-
-    return
-
 def fun_save_FileWork(list_class_hyph: list, strFileName: str):
 
     try:
@@ -832,143 +455,6 @@ def fun_save_list_workEMA_Work(list_class_hyph: list, strFileName: str):
         print(strFileName)
     return
 
-
-def fun_get_Shilin(boolShilin=True):
-    # result =[]
-    data_into_list = []
-    list_class_hyphe = []
-
-    int_MonNumber = 100
-    if (boolShilin == True):
-        pageURL = "https://shilintrade.pro/crypto_bot/crypto_best_volume.txt"
-        webbrowser.open(pageURL)
-        # pu = "https://www.coinbase.com/ru/explore/s/all?page=1"
-
-        req = requests.get(pageURL)
-        # req = requests.get(pu)
-        soup = BeautifulSoup(req.content, 'html.parser')
-        data = soup.text
-
-        data_into_list = data.split("\r\n")
-
-        print(data_into_list)
-    else:
-        try:
-            int_MonNumber = int(input("Введите количество монет: "))
-
-        except ValueError:
-            print('Недопустимый ввод')
-
-        list_instrt11, data_into_list = get_list_instrums(int_MonNumber)
-
-    str_time = datetime.now().strftime('%H_%M_%S')
-    str_date = datetime.now().strftime('%Y_%m_%d')
-
-    if ("07_30_00" < str_time):
-
-        data_into_list_true = []
-        for name_elem in data_into_list:
-            name_elem = fun_convert(name_elem)
-            data_into_list_true.append(name_elem)
-
-        data_into_list_true = fun_clear_LongList(data_into_list_true)
-        str_file = gl_strPathSave + "CryptoLong\\" + str_date + '_' + "cryptoles.txt"
-        with open(str_file, 'w') as fp:
-            data_into_list_sort = copy.deepcopy(data_into_list_true)
-            data_into_list_sort.sort()
-            for item in data_into_list_sort:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-            print('Done')
-
-    listInstruments = []
-    intCount = 0
-    intNumStop = 6
-
-    debug_count = 0
-    for elem in data_into_list:
-        debug_count = debug_count + 1
-        # if 4 < debug_count:
-        #     break;
-        ppname = fun_convert(elem)
-
-        strhyper1 = 'https://www.bybit.com/trade/' + ppname
-        webbrowser.open(strhyper1)  # Go to example.com
-
-        bool_repeat = True
-        print(strhyper1)
-        intCount = intCount + 1
-        print(elem)
-        print(intCount)
-        intNum = data_into_list.__len__() - intCount
-
-        while (bool_repeat):
-            try:
-                text = input("type Enter for skip\nor percent value to save:")
-                if text == "":
-                    bool_repeat = False
-                else:
-                    float_percent = float(text)
-                    aa = InstrData(float_percent, strhyper1)
-                    list_class_hyphe.append(aa)
-                    bool_repeat = False
-
-            except ValueError:
-                print('Недопустимый ввод, введите число')
-            except Exception as e:
-                print('++++++ Ошибка +++++:\n' + traceback.format_exc())
-
-    return list_class_hyphe
-
-
-def fun_get_List_PreWork():
-    list_instruments = []
-    list_class_hyphe = []
-
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-    str_file = gl_strPathSave + "CryptoShort\\cryptowork.txt"
-
-    try:
-        with open(str_file, 'r') as f:
-            list_instruments = [line[:-1] for line in f]
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-
-    intCount = 0
-
-    for elem in list_instruments:
-        text = elem
-        hyper = ""
-        try:
-            separator, hyper = text.split('#', 1)
-
-        except:
-            hyper = text
-
-        webbrowser.open(hyper)  # Go to example.com
-
-        intCount = intCount + 1
-        print(elem)
-        print(intCount)
-
-        bool_repeat = True
-        while (bool_repeat):
-            try:
-                text = input("type Enter for skip\nor percent value to save:")
-                if text == "":
-                    bool_repeat = False
-                else:
-                    float_percent = float(text)
-                    aa = InstrData(float_percent, elem)
-                    list_class_hyphe.append(aa)
-                    bool_repeat = False
-
-            except ValueError:
-                print('Недопустимый ввод, введите число')
-
-    return list_class_hyphe
 
 def fun_viewListFiles(str_file, intTypeOpen=0):
 
@@ -1107,51 +593,6 @@ def fun_createList_Ema_IKD(str_file, intTypeOpen=0):
 
     return list_class_hyphe, list_class_IKD
 
-
-def fun_save_ListWork(list_huper: list):
-    str_time = datetime.now().strftime('%H_%M_%S')
-    str_date = datetime.now().strftime('%Y_%m_%d')
-
-    str_file = gl_strPathSave + "CryptoShort\\" + str_date + '_' + "cryptowork.txt"
-    try:
-        with open(str_file, 'w') as fp:
-            data_into_list_sort = copy.deepcopy(list_huper)
-            data_into_list_sort.sort()
-            for item in data_into_list_sort:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-            print('Done list_huper')
-
-    except ValueError:
-        print("Проблема с файлом: ")
-        print(str_file)
-
-    return
-
-
-def fun_save_withtime_ListWorkLast(strfilename="LastCrypto"):
-    # str_time = datetime.now().strftime('%H_%M_%S')
-    # str_date = datetime.now().strftime('%Y_%m_%d')
-
-    str_fileCrypto = strfilename
-    if strfilename != "LastCrypto":
-        str_fileCrypto = str_fileCrypto
-
-    str_fileCryptoFull = gl_strPathSave + "CryptoShort\\" + str_fileCrypto + ".txt"
-    mtime = os.path.getmtime(str_fileCryptoFull)
-    mtime_readable = datetime.fromtimestamp(mtime).strftime('%Y_%m_%d_%H_%M_%S')
-
-    str_fileCryptoFullName = gl_strPathSave + "CryptoShort\\" + mtime_readable + '_' + str_fileCrypto + ".txt"
-    print(mtime_readable)
-    try:
-        shutil.copyfile(str_fileCryptoFull, str_fileCryptoFullName)
-        print("Done  %s " % strfilename)
-
-    except ValueError:
-        print("Проблема с файлом: %s " % str_fileCrypto)
-
-    return
-
 def fun_save_withdatetime(strfilename, strpostfix = ""):
     str_time = datetime.now().strftime('%H_%M_%S')
     str_date = datetime.now().strftime('%Y_%m_%d')
@@ -1170,20 +611,6 @@ def fun_save_withdatetime(strfilename, strpostfix = ""):
         print("Проблема с файлом: %s " % strfilename)
 
     return
-def fun_clear_LongList(datalist: list):
-    datalist_new = []
-    for name_elem in datalist:
-        # name_elem = fun_convert(name_elem)
-
-        for sub_str in list_string_Remove:
-            if (sub_str in name_elem):
-                str_new = name_elem.replace(sub_str, '')
-                datalist_new.append(str_new)
-
-    if ('' in datalist_new):
-        datalist_new.remove('')
-
-    return datalist_new
 
 def get_list_instrums(intN=-1):
     list_instrums = []
