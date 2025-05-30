@@ -18,6 +18,8 @@ import locale
 import requests
 from datetime import datetime
 
+from ccxt import BadSymbol
+
 # gl_strPathSave = "E:\\YandexDisk\\КШ\\CryptoArchive\\"
 gl_strPathSave = "D:\\CryptoArchive\\"
 gl_strCurrentWork = "CurrentWork\\"
@@ -118,8 +120,15 @@ def fun_CalculateAtr(symbol = "BTCUSDT"):
     sleep(1)
     exchange = ccxt.bybit()
 
-    dfd_day = pd.DataFrame(exchange.fetch_ohlcv(symbol, "1d", limit=100),
-                  columns=["ts", "open", "high", "low", "close", "volume"])
+    dfd_day = pd.DataFrame(columns={'ts': datetime, 'open': float, 'high': float,
+        'low': float, 'close': float, 'volume': float })
+    try:
+        dfd_day = pd.DataFrame(exchange.fetch_ohlcv(symbol, "1d", limit=100),
+            columns=["ts", "open", "high", "low", "close", "volume"])
+
+    except Exception as e:
+        print('Ошибка:\n', traceback.format_exc())
+        return -1, dfd_day
 
     dfd_day["ts"] = pd.to_datetime(dfd_day["ts"], unit="ms")
     # Удаляем последнюю сторку - на сегодня
@@ -128,7 +137,7 @@ def fun_CalculateAtr(symbol = "BTCUSDT"):
 
     df_DAY  = aux_atr_QuikFormula ( symbol, dfd_day)
 
-    return df_DAY
+    return 0, df_DAY
 
 
 
