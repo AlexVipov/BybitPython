@@ -581,7 +581,10 @@ def fun_viewListFiles(str_file = ""):
     if( str_file == ""):
         strdir = str(input("Директория: "))
         strfile = str(input("Файл: "))
-        str_file = strdir + '\\' + strfile
+        if(".txt" in strfile):
+            str_file = strdir + '\\' + strfile
+        else:
+            str_file = strdir + '\\' + strfile + '.txt'
 
     list_instruments = []
     try:
