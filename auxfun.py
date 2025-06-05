@@ -29,6 +29,34 @@ list_names_main = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUS
                    'MATICUSDT', 'LTCUSDT']
 
 
+def fun_ATR(symbol, period = '1d'):
+    import ccxt
+    import pandas as pd
+
+    exchange = ccxt.bybit()
+
+    sleep(1)
+    # Загружаем данные
+    df = pd.DataFrame(exchange.fetch_ohlcv(symbol,period, limit=100),
+                      columns=["ts", "open", "high", "low", "close", "volume"])
+    df["ts"] = pd.to_datetime(df["ts"], unit="ms")
+
+    # Расчёт ATR вручную
+    df["tr"] = df["high"] - df["low"]
+    df["tr"] = df["tr"].combine_first((df["high"] - df["close"].shift()).abs())
+    df["tr"] = df["tr"].combine_first((df["low"] - df["close"].shift()).abs())
+    df["atr"] = df["tr"].rolling(14).mean()
+
+    current_atr = df["atr"].iloc[-1]
+    mean_atr = df["atr"].mean()
+    ratio = current_atr / mean_atr * 100
+
+    print(f"Текущий ATR: {current_atr:.4f} | Средний ATR: {mean_atr:.4f} | Отношение: {ratio:.1f}%")
+
+    if ratio < 60:
+        print("📉 Внимание: Сжатие волатильности (ATR Squeeze) — возможен скорый breakout!")
+    else:
+        print("✅ Волатильность в норме")
 
 def aux_CalculateEMA_ATR(listallsec, timeperiod=10):
     # Prepare data for numpy and talib
@@ -346,7 +374,10 @@ def getinstrbybit70D(list_instrum, strdirection='long', strcategory='linear'):
             # ========================================================
             strMoney = locale.format_string('%d', elem.turnover24h, grouping=True)
             strprint = elem.symbol + '   ' + str(intType) + '   ' + strMoney
+            print("----------------------------------------")
             print(strprint)
+            # fun_ATR(str(elem.symbol))
+
 
     return list_ret
 
@@ -667,12 +698,13 @@ def fun_createList_Ema_IKD(str_file, intTypeOpen=0):
             strBrowseHyper = 'https://www.bybit.com/trade/usdt/' + str(hyper[0])
             webbrowser.open(strBrowseHyper)  # Go to example.com
 
-            # intCount = intCount + 1
+            # intCount = intCount +
+            print('---------------------------------------------------')
             print(elem)
             strfullprint = str(intCount) + '/' + str(len(list_instruments))
             print(strfullprint)
-            # else:
-            #     continue
+            # fun_ATR(str(hyper[0]))
+
         except:
             hyper = text
 
